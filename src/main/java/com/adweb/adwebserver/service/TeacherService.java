@@ -3,9 +3,10 @@ package com.adweb.adwebserver.service;
 import com.adweb.adwebserver.domain.Course;
 import com.adweb.adwebserver.domain.Teacher;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface TeacherService {
     public Teacher register(Teacher teacher);
     public Teacher login(int number, String password);
