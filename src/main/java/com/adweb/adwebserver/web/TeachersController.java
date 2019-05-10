@@ -2,6 +2,9 @@ package com.adweb.adwebserver.web;
 
 import com.adweb.adwebserver.domain.Teacher;
 import com.adweb.adwebserver.domain.TeacherRepository;
+import com.adweb.adwebserver.service.ServiceFactory;
+import com.adweb.adwebserver.service.TeacherService;
+import com.adweb.adwebserver.service.impl.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,7 @@ import javax.validation.Valid;
 public class TeachersController {
     @Autowired
     private TeacherRepository teacherRepository;
+    private TeacherService teacherService= ServiceFactory.getTeacherServiceInstance();
     /**
      *
      * @param name 老师昵称
@@ -43,7 +47,7 @@ public class TeachersController {
      * @return
      */
     @PostMapping(path = "/registerTest")
-    public @ResponseBody String test(@Valid Teacher teacher){
-        return teacher.toString();
+    public @ResponseBody Teacher test(@Valid Teacher teacher){
+        return teacherRepository.save(teacher);
     }
 }
