@@ -2,11 +2,8 @@ package com.adweb.adwebserver.web;
 
 import com.adweb.adwebserver.domain.Teacher;
 import com.adweb.adwebserver.domain.TeacherRepository;
-import com.adweb.adwebserver.service.ServiceFactory;
 import com.adweb.adwebserver.service.TeacherService;
-import com.adweb.adwebserver.service.impl.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +25,7 @@ public class TeachersController {
      * 这里稍作解释，只要前端传过来的数据和后端对象的数据名字一致就可以全部解析了
      * 用框架真的是懒，不过自动化解析也就很舒服
      * @param teacher 老师相关参数
-     * @return
+     * @return teacher对象
      */
     @PostMapping(path = "/register")
     public @ResponseBody Teacher register(@Valid Teacher teacher){
