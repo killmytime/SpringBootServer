@@ -2,17 +2,15 @@ package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.Teacher;
 import com.adweb.adwebserver.domain.TeacherRepository;
-import com.adweb.adwebserver.service.ServiceFactory;
 import com.adweb.adwebserver.service.TeacherService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
-
 public class TeacherServiceImplTest {
-    TeacherService teacherService= ServiceFactory.getTeacherServiceInstance();
+    @Autowired
+    TeacherService teacherService;
     @Before
     public void setUp() throws Exception {
     }
