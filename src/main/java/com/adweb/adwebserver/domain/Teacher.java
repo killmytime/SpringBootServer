@@ -1,11 +1,13 @@
 package com.adweb.adwebserver.domain;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
-
+@Component
 @Entity
 public class Teacher {
     private int teacherId;
