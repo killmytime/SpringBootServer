@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
-@Component@Entity
+
+@Component
+@Entity
 public class Course {
     private int courseId;
     private String courseName;

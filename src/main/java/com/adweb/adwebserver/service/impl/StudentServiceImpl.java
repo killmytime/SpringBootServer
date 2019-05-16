@@ -1,13 +1,10 @@
 package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.*;
+import com.adweb.adwebserver.domain.repository.StudentRepository;
 import com.adweb.adwebserver.service.StudentService;
-import com.adweb.adwebserver.service.TeacherService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * 关于身份校验的东西，之后再详细搞出一个解决方案

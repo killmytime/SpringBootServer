@@ -1,5 +1,6 @@
-package com.adweb.adwebserver.domain;
+package com.adweb.adwebserver.domain.repository;
 
+import com.adweb.adwebserver.domain.Student;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

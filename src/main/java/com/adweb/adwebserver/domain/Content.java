@@ -1,17 +1,23 @@
 package com.adweb.adwebserver.domain;
 
+import com.alibaba.fastjson.JSONArray;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Objects;
-
+@Component
 @Entity
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Content {
     private int contentId;
     private String contentName;
-    private Serializable dialog;
+    private JSONArray dialog;
 
     @Id
     @Column(name = "contentId")
@@ -34,12 +40,13 @@ public class Content {
     }
 
     @Basic
+    @Type(type = "json")
     @Column(name = "dialog")
-    public Serializable getDialog() {
+    public JSONArray getDialog() {
         return dialog;
     }
 
-    public void setDialog(Serializable dialog) {
+    public void setDialog(JSONArray dialog) {
         this.dialog = dialog;
     }
 

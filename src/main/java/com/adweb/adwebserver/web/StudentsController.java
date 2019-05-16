@@ -1,7 +1,7 @@
 package com.adweb.adwebserver.web;
 
 import com.adweb.adwebserver.domain.Student;
-import com.adweb.adwebserver.domain.StudentRepository;
+import com.adweb.adwebserver.domain.repository.StudentRepository;
 import com.adweb.adwebserver.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

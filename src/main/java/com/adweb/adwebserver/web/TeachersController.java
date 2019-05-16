@@ -1,7 +1,7 @@
 package com.adweb.adwebserver.web;
 
 import com.adweb.adwebserver.domain.Teacher;
-import com.adweb.adwebserver.domain.TeacherRepository;
+import com.adweb.adwebserver.domain.repository.TeacherRepository;
 import com.adweb.adwebserver.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

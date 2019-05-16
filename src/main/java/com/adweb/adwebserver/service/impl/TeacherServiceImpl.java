@@ -1,9 +1,9 @@
 package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.Course;
-import com.adweb.adwebserver.domain.CourseRepository;
+import com.adweb.adwebserver.domain.repository.CourseRepository;
 import com.adweb.adwebserver.domain.Teacher;
-import com.adweb.adwebserver.domain.TeacherRepository;
+import com.adweb.adwebserver.domain.repository.TeacherRepository;
 import com.adweb.adwebserver.service.TeacherService;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
