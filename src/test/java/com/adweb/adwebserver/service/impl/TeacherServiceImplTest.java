@@ -1,7 +1,6 @@
 package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.Teacher;
-import com.adweb.adwebserver.domain.TeacherRepository;
 import com.adweb.adwebserver.service.TeacherService;
 import org.junit.After;
 import org.junit.Before;

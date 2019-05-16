@@ -1,17 +1,15 @@
 package com.adweb.adwebserver.domain;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
-@Component
+
 @Entity
 public class Student {
     private int studentId;
-    private Integer number;
+    private String number;
     private String name;
     private String email;
     private String avatar;
@@ -29,11 +27,11 @@ public class Student {
 
     @Basic
     @Column(name = "Number")
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

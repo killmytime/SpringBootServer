@@ -8,16 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
-@Component
-@Entity
+@Component@Entity
 public class Course {
     private int courseId;
     private String courseName;
-    private Serializable directory;
     private String courseDetail;
     private String coursePath;
     private int teacherId;
     private String teacherName;
+    private int directoryId;
 
     @Id
     @Column(name = "CourseID")
@@ -37,16 +36,6 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
-    }
-
-    @Basic
-    @Column(name = "Directory")
-    public Serializable getDirectory() {
-        return directory;
-    }
-
-    public void setDirectory(Serializable directory) {
-        this.directory = directory;
     }
 
     @Basic
@@ -97,7 +86,6 @@ public class Course {
         return courseId == course.courseId &&
                 teacherId == course.teacherId &&
                 Objects.equals(courseName, course.courseName) &&
-                Objects.equals(directory, course.directory) &&
                 Objects.equals(courseDetail, course.courseDetail) &&
                 Objects.equals(coursePath, course.coursePath) &&
                 Objects.equals(teacherName, course.teacherName);
@@ -105,6 +93,16 @@ public class Course {
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, courseName, directory, courseDetail, coursePath, teacherId, teacherName);
+        return Objects.hash(courseId, courseName, courseDetail, coursePath, teacherId, teacherName);
+    }
+
+    @Basic
+    @Column(name = "DirectoryID")
+    public int getDirectoryId() {
+        return directoryId;
+    }
+
+    public void setDirectoryId(int directoryId) {
+        this.directoryId = directoryId;
     }
 }

@@ -1,13 +1,11 @@
 package com.adweb.adwebserver.domain;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
-@Component
+
 @Entity
 public class Teacher {
     private int teacherId;
@@ -105,18 +103,5 @@ public class Teacher {
     @Override
     public int hashCode() {
         return Objects.hash(teacherId, number, name, email, invitation, password, avatar);
-    }
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "teacherId=" + teacherId +
-                ", number=" + number +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", invitation='" + invitation + '\'' +
-                ", password='" + password + '\'' +
-                ", avatar='" + avatar + '\'' +
-                '}';
     }
 }

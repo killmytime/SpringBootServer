@@ -1,10 +1,7 @@
 package com.adweb.adwebserver.web;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.adweb.adwebserver.domain.Student;
 import com.adweb.adwebserver.domain.StudentRepository;
-import com.adweb.adwebserver.domain.Teacher;
 import com.adweb.adwebserver.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +27,8 @@ public class StudentsController {
     }
 
     @PostMapping(path = "/update")
-    public @ResponseBody Student update(@Valid Student student){
+    public @ResponseBody
+    Student update(@Valid Student student){
         return studentService.update(student);
     }
 
