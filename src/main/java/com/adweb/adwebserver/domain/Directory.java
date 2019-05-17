@@ -6,19 +6,20 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 @Component
 @Entity
-@TypeDef(name = "json", typeClass = JsonStringType.class)
 public class Directory {
     private int directoryId;
     private JSONArray list;
 
     @Id
-    @Column(name = "DirectoryID")
+    @Column(name = "directoryID")
     public int getDirectoryId() {
         return directoryId;
     }
@@ -26,8 +27,10 @@ public class Directory {
     public void setDirectoryId(int directoryId) {
         this.directoryId = directoryId;
     }
+
+    @Basic
     @Type(type = "json")
-    @Column(name = "List")
+    @Column(name = "list")
     public JSONArray getList() {
         return list;
     }

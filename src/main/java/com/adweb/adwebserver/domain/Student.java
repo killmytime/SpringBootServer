@@ -18,7 +18,7 @@ public class Student {
     private String wechatId;
 
     @Id
-    @Column(name = "StudentID")
+    @Column(name = "studentID")
     public int getStudentId() {
         return studentId;
     }
@@ -28,7 +28,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "Number")
+    @Column(name = "number")
     public String getNumber() {
         return number;
     }
@@ -38,7 +38,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "Name")
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -48,7 +48,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "Email")
+    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -58,7 +58,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "Avatar")
+    @Column(name = "avatar")
     public String getAvatar() {
         return avatar;
     }
@@ -68,7 +68,7 @@ public class Student {
     }
 
     @Basic
-    @Column(name = "WechatID")
+    @Column(name = "wechatID")
     public String getWechatId() {
         return wechatId;
     }

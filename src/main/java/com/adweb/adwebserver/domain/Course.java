@@ -6,22 +6,19 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Objects;
-
 @Component
 @Entity
 public class Course {
     private int courseId;
     private String courseName;
+    private int directoryId;
     private String courseDetail;
-    private String coursePath;
     private int teacherId;
     private String teacherName;
-    private int directoryId;
 
     @Id
-    @Column(name = "CourseID")
+    @Column(name = "courseID")
     public int getCourseId() {
         return courseId;
     }
@@ -31,7 +28,7 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "CourseName")
+    @Column(name = "course_name")
     public String getCourseName() {
         return courseName;
     }
@@ -41,7 +38,17 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "CourseDetail")
+    @Column(name = "directoryID")
+    public int getDirectoryId() {
+        return directoryId;
+    }
+
+    public void setDirectoryId(int directoryId) {
+        this.directoryId = directoryId;
+    }
+
+    @Basic
+    @Column(name = "course_detail")
     public String getCourseDetail() {
         return courseDetail;
     }
@@ -51,17 +58,7 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "CoursePath")
-    public String getCoursePath() {
-        return coursePath;
-    }
-
-    public void setCoursePath(String coursePath) {
-        this.coursePath = coursePath;
-    }
-
-    @Basic
-    @Column(name = "TeacherID")
+    @Column(name = "teacherID")
     public int getTeacherId() {
         return teacherId;
     }
@@ -71,7 +68,7 @@ public class Course {
     }
 
     @Basic
-    @Column(name = "TeacherName")
+    @Column(name = "teacher_name")
     public String getTeacherName() {
         return teacherName;
     }
@@ -86,25 +83,15 @@ public class Course {
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
         return courseId == course.courseId &&
+                directoryId == course.directoryId &&
                 teacherId == course.teacherId &&
                 Objects.equals(courseName, course.courseName) &&
                 Objects.equals(courseDetail, course.courseDetail) &&
-                Objects.equals(coursePath, course.coursePath) &&
                 Objects.equals(teacherName, course.teacherName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, courseName, courseDetail, coursePath, teacherId, teacherName);
-    }
-
-    @Basic
-    @Column(name = "DirectoryID")
-    public int getDirectoryId() {
-        return directoryId;
-    }
-
-    public void setDirectoryId(int directoryId) {
-        this.directoryId = directoryId;
+        return Objects.hash(courseId, courseName, directoryId, courseDetail, teacherId, teacherName);
     }
 }

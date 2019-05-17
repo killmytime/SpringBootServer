@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 public class Teacher {
     private int teacherId;
-    private Integer number;
+    private String number;
     private String name;
     private String email;
     private String invitation;
@@ -19,7 +19,7 @@ public class Teacher {
     private String avatar;
 
     @Id
-    @Column(name = "TeacherID")
+    @Column(name = "teacherID")
     public int getTeacherId() {
         return teacherId;
     }
@@ -29,17 +29,17 @@ public class Teacher {
     }
 
     @Basic
-    @Column(name = "Number")
-    public Integer getNumber() {
+    @Column(name = "number")
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
     @Basic
-    @Column(name = "Name")
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -49,7 +49,7 @@ public class Teacher {
     }
 
     @Basic
-    @Column(name = "Email")
+    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -59,7 +59,7 @@ public class Teacher {
     }
 
     @Basic
-    @Column(name = "Invitation")
+    @Column(name = "invitation")
     public String getInvitation() {
         return invitation;
     }
@@ -69,7 +69,7 @@ public class Teacher {
     }
 
     @Basic
-    @Column(name = "Password")
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -79,7 +79,7 @@ public class Teacher {
     }
 
     @Basic
-    @Column(name = "Avatar")
+    @Column(name = "avatar")
     public String getAvatar() {
         return avatar;
     }
