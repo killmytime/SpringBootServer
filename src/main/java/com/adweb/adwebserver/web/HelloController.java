@@ -8,15 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
-    @Autowired
-    DirectoryRepository directoryRepository;
-    @RequestMapping("/hello")
-    public String index() {
-        return "Hello World";
-    }
-    @GetMapping("/test")
-    public @ResponseBody
-    Directory test(){
-        return directoryRepository.getDirectoryByDirectoryId(1);
-    }
 }
