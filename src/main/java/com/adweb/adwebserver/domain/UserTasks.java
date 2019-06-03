@@ -16,7 +16,7 @@ import java.util.Objects;
 public class UserTasks {
     private int taskId;
     private int studentId;
-    private int contentId;
+    private String contentId;
     private String contentName;
     private JSONObject question;
     private JSONObject answer;
@@ -43,11 +43,11 @@ public class UserTasks {
 
     @Basic
     @Column(name = "contentID")
-    public int getContentId() {
+    public String getContentId() {
         return contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(String contentId) {
         this.contentId = contentId;
     }
 

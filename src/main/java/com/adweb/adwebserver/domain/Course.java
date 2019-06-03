@@ -1,21 +1,25 @@
 package com.adweb.adwebserver.domain;
 
-import org.springframework.stereotype.Component;
+import com.alibaba.fastjson.JSONArray;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
-@Component
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 @Entity
 public class Course {
     private int courseId;
     private String courseName;
-    private int directoryId;
     private String courseDetail;
     private int teacherId;
     private String teacherName;
+    private int flag;
+    private JSONArray directory;
 
     @Id
     @Column(name = "courseID")
@@ -35,16 +39,6 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
-    }
-
-    @Basic
-    @Column(name = "directoryID")
-    public int getDirectoryId() {
-        return directoryId;
-    }
-
-    public void setDirectoryId(int directoryId) {
-        this.directoryId = directoryId;
     }
 
     @Basic
@@ -77,21 +71,43 @@ public class Course {
         this.teacherName = teacherName;
     }
 
+    @Basic
+    @Column(name = "flag")
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+    @Basic
+    @Type(type = "json")
+    @Column(name = "directory")
+    public JSONArray getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(JSONArray directory) {
+        this.directory = directory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
         return courseId == course.courseId &&
-                directoryId == course.directoryId &&
                 teacherId == course.teacherId &&
+                flag == course.flag &&
                 Objects.equals(courseName, course.courseName) &&
                 Objects.equals(courseDetail, course.courseDetail) &&
-                Objects.equals(teacherName, course.teacherName);
+                Objects.equals(teacherName, course.teacherName) &&
+                Objects.equals(directory, course.directory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, courseName, directoryId, courseDetail, teacherId, teacherName);
+        return Objects.hash(courseId, courseName, courseDetail, teacherId, teacherName, flag, directory);
     }
 }

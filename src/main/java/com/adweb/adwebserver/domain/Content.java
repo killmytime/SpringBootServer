@@ -16,18 +16,18 @@ import java.util.Objects;
 @Component
 @Entity
 public class Content {
-    private int contentId;
+    private String contentId;
     private String contentName;
     private JSONArray dialog;
     private JSONObject question;
 
     @Id
     @Column(name = "contentID")
-    public int getContentId() {
+    public String getContentId() {
         return contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(String contentId) {
         this.contentId = contentId;
     }
 

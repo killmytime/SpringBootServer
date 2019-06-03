@@ -10,7 +10,7 @@ import java.util.Objects;
 public class UserNotes {
     private int noteId;
     private int studentId;
-    private int contentId;
+    private String contentId;
     private String contentName;
     private String note;
 
@@ -36,11 +36,11 @@ public class UserNotes {
 
     @Basic
     @Column(name = "contentID")
-    public int getContentId() {
+    public String getContentId() {
         return contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(String contentId) {
         this.contentId = contentId;
     }
 

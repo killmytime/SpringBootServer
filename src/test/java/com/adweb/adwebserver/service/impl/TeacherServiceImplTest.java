@@ -25,7 +25,7 @@ public class TeacherServiceImplTest {
         teacher.setAvatar("213123");
         teacher.setName("helloworld");
         teacher.setEmail("2131231");
-        teacher.setNumber(12341312);
+        //teacher.setNumber(12341312);
         teacher.setInvitation("2313214");
         System.out.println(teacherService.register(teacher));
     }
