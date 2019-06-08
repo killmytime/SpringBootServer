@@ -71,7 +71,7 @@ public class UserNotes {
         UserNotes userNotes = (UserNotes) o;
         return noteId == userNotes.noteId &&
                 studentId == userNotes.studentId &&
-                contentId == userNotes.contentId &&
+                contentId.equals(userNotes.contentId) &&
                 Objects.equals(contentName, userNotes.contentName) &&
                 Objects.equals(note, userNotes.note);
     }

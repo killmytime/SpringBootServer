@@ -20,11 +20,13 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public boolean modifyProcess(int studentID, int courseID, PresentNode presentNode, ProcessNode processNode) {
+        UserProcess userProcess=userProcessRepository.getUserProcessesByStudentIdAndCourseId(studentID,courseID);
+        //Todo 在修改json列表之后再把数据正确存储
         return false;
     }
 
     @Override
     public UserProcess getUserProcess(int studentID, int courseID) {
-        return null;
+        return userProcessRepository.getUserProcessesByStudentIdAndCourseId(studentID,courseID);
     }
 }

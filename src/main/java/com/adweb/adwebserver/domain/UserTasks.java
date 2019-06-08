@@ -20,6 +20,7 @@ public class UserTasks {
     private String contentName;
     private JSONObject question;
     private JSONObject answer;
+    private int flag;
 
     @Id
     @Column(name = "taskID")
@@ -83,6 +84,11 @@ public class UserTasks {
         this.answer = answer;
     }
 
+    @Basic
+    @Column(name = "flag")
+    public int getFlag(){return flag;}
+
+    public void setFlag(int flag){this.flag=flag;}
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,14 +96,15 @@ public class UserTasks {
         UserTasks userTasks = (UserTasks) o;
         return taskId == userTasks.taskId &&
                 studentId == userTasks.studentId &&
-                contentId == userTasks.contentId &&
+                contentId.equals(userTasks.contentId) &&
                 Objects.equals(contentName, userTasks.contentName) &&
                 Objects.equals(question, userTasks.question) &&
-                Objects.equals(answer, userTasks.answer);
+                Objects.equals(answer, userTasks.answer)&&
+                flag==userTasks.flag;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskId, studentId, contentId, contentName, question, answer);
+        return Objects.hash(taskId, studentId, contentId, contentName, question, answer,flag);
     }
 }

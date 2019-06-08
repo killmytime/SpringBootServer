@@ -68,7 +68,7 @@ public class Content {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Content content = (Content) o;
-        return contentId == content.contentId &&
+        return contentId.equals(content.contentId) &&
                 Objects.equals(contentName, content.contentName) &&
                 Objects.equals(dialog, content.dialog) &&
                 Objects.equals(question, content.question);
