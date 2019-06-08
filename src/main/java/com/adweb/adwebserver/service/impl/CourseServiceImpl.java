@@ -1,15 +1,20 @@
 package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.Course;
+import com.adweb.adwebserver.domain.UserProcess;
 import com.adweb.adwebserver.domain.repository.CourseRepository;
+import com.adweb.adwebserver.domain.repository.UserProcessRepository;
 import com.adweb.adwebserver.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseServiceImpl implements CourseService {
     @Autowired
     CourseRepository courseRepository;
+    @Autowired
+    UserProcessRepository userProcessRepository;
     @Override
     public Course addNewCourse(Course course) {
         return courseRepository.save(course);
@@ -23,6 +28,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCourseByFlag(int flag) {
         return courseRepository.getCoursesByFlag(flag);
+    }
+
+    @Override
+    public List<Course> getCourseByStudentID(int studentID) {
+        List<UserProcess> userProcesses=userProcessRepository.getUserProcessesByStudentId(studentID);
+        List<Course> courses=new ArrayList<>();
+        for (UserProcess userProcess:userProcesses){
+            courses.add(courseRepository.getCourseByCourseId(userProcess.getCourseId()));
+        }
+        return courses;
     }
 
     @Override

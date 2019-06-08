@@ -9,6 +9,7 @@ public interface CourseService {
     public Course modifyCourse(Course course);//这里需要courseID来定位,修改课程的除内容之外的信息，状态设置忽略
     /**信息会处理掉一部分多余的，也可能忘记了，这是显示到主界面上的**/
     public List<Course> getCourseByFlag(int flag);//这里期获取所有发布的课程，考虑到可能更改的需求，用flag指代，发布了的为1，没发布的为0，其他状态待定吧
+    public List<Course> getCourseByStudentID(int studentID);//这里完善的是获取学生的课程列表功能
     public Course getCourseByID(int courseID);//这里根据courseID获取指定课程的详情内容
     public Course postCourse(Course course);//这里需要的是courseID和flag，主要是flag，点击发布即设置为1
     public Course deleteCourse(Course course);//这里需要courseID来定位，校验flag，仅可以删除未发布的课程，同时删除课程内容，这样不涉及用户信息的丢失问题
