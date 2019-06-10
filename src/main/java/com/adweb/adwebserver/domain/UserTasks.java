@@ -19,7 +19,7 @@ public class UserTasks {
     private String contentId;
     private String contentName;
     private JSONObject question;
-    private JSONObject answer;
+    private String answer;
     private int flag;
 
     @Id
@@ -74,13 +74,12 @@ public class UserTasks {
     }
 
     @Basic
-    @Type(type = "json")
     @Column(name = "answer")
-    public JSONObject getAnswer() {
+    public String getAnswer() {
         return answer;
     }
 
-    public void setAnswer(JSONObject answer) {
+    public void setAnswer(String answer) {
         this.answer = answer;
     }
 

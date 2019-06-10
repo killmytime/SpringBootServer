@@ -5,6 +5,8 @@ import com.adweb.adwebserver.domain.ProcessNode;
 import com.adweb.adwebserver.domain.UserProcess;
 import com.adweb.adwebserver.domain.repository.UserProcessRepository;
 import com.adweb.adwebserver.service.ProcessService;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProcessServiceImpl implements ProcessService {
@@ -22,7 +24,14 @@ public class ProcessServiceImpl implements ProcessService {
     public boolean modifyProcess(int studentID, int courseID, PresentNode presentNode, ProcessNode processNode) {
         UserProcess userProcess=userProcessRepository.getUserProcessesByStudentIdAndCourseId(studentID,courseID);
         //Todo 在修改json列表之后再把数据正确存储
-        return false;
+        JSONArray processList=userProcess.getProcessList();
+        JSONArray presentList=userProcess.getPresentList();
+        processList.add(JSONObject.toJSON(presentNode));
+        presentList.add(JSONObject.toJSON(presentNode));
+        userProcess.setProcessList(processList);
+        userProcess.setPresentList(presentList);
+        userProcessRepository.save(userProcess);
+        return true;
     }
 
     @Override
