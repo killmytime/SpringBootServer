@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserTasksRepository extends CrudRepository<UserTasks,Long> {
     List<UserTasks> getUserTasksByStudentId(int studentID);
     UserTasks getUserTasksByStudentIdAndContentId(int studentID, String contentID);
-    @Query(value = "select taskId,studentId,contentId,contentName,question,answer,flag from UserTasks where contentId like %courseId")//Todo 这里的语法可能有问题，定位先看Todo List
+    @Query(value = "select taskId,studentId,contentId,contentName,question,answer,flag from UserTasks where contentId like %?1")//Todo 这里的语法可能有问题，定位先看Todo List
     List<UserTasks> getUserTasksByCourseId(int courseID);
     UserTasks getUserTasksByTaskId(int taskID);
 }

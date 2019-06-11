@@ -37,9 +37,9 @@ public class TeachersController {
         return teacherService.register(teacher);
     }
 
-    @GetMapping(path = "/login")
+    @PostMapping(path = "/login")
     public @ResponseBody
-    Teacher login(@RequestParam int number, @RequestParam String password) {
+    Teacher login(@RequestParam String number, @RequestParam String password) {
         return teacherService.login(number, password);
     }
 

@@ -27,7 +27,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher login(int number, String password) {
+    public Teacher login(String number, String password) {
         return teacherRepository.findTeacherByNumberAndPassword(number,password);
     }
 
