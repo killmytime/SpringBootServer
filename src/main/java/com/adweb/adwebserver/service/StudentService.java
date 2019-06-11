@@ -9,11 +9,11 @@ import java.util.List;
 
 @Service
 public interface StudentService {
-    public Student login(String wechatId);
-    public Student update(Student student);
-    public Student getStudent(Student student);
-    public List<Course> getAllCourse(int studentID);
-    public Course getDetailCourse(int studentID, int courseID);
+    Student login(String wechatId);
+    Student update(Student student);
+    Student getStudent(Student student);
+    List<Course> getAllCourse(int studentID);
+    Course getDetailCourse(int studentID, int courseID);
     /*
 
 

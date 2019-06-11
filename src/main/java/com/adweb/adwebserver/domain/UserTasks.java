@@ -20,7 +20,7 @@ public class UserTasks {
     private String contentName;
     private JSONObject question;
     private String answer;
-    private int flag;
+    private int flag;//0未完成，1待审阅，2已审阅
 
     @Id
     @Column(name = "taskID")
