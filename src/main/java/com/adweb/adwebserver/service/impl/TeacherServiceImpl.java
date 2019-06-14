@@ -66,10 +66,10 @@ public class TeacherServiceImpl implements TeacherService {
         return courseRepository.getCoursesByTeacherId(teacherID);
     }
 
-    @Override
+    /*@Override
     public Course updateCourse(Teacher teacher, Course course) {
         return null;
-    }
+    }*/
 
     @Override
     public boolean updateDirectory(JSONPObject directory, Course course) {

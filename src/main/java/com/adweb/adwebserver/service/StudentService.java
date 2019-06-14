@@ -12,8 +12,8 @@ public interface StudentService {
     Student login(String wechatId);
     Student update(Student student);
     Student getStudent(Student student);
-    List<Course> getAllCourse(int studentID);
-    Course getDetailCourse(int studentID, int courseID);
+    //List<Course> getAllCourse(int studentID);CourseService中已经有了
+    //Course getDetailCourse(int studentID, int courseID);CourseService中已经有了
     /*
 
 
