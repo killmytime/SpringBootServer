@@ -48,13 +48,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     //todo courseRepository里要实现下面两个方法
-    @Override
+    //@Override
     public List<Course> getAllCourse(int studentID) {
         //return courseRepository.getCoursesByStudentId(studentID);
         return null;
     }
 
-    @Override
+    //@Override
     public Course getDetailCourse(int studentID, int courseID) {
         //return courseRepository.getCoursesByStudentIDAndCourseID();
         return null;

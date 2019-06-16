@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post,Long> {
     //@Query("select u from Student u where u.name=?1")
     //Collection<Student> findStudentsByName(String name);
     Post getPostByPostId(int postID);
+    List<Post> getPostByCourseId(int courseID);
 }

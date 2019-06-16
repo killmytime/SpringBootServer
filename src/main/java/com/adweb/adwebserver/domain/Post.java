@@ -2,7 +2,6 @@ package com.adweb.adwebserver.domain;
 
 import com.alibaba.fastjson.JSONArray;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import javafx.geometry.Pos;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 

@@ -26,6 +26,8 @@ public class StudentsController {
     TaskService taskService;
     @Autowired
     NoteService noteService;
+    @Autowired
+    PostService postService;
 
     @GetMapping(path = "/all")
     public @ResponseBody Iterable<Student> getStudents(){
@@ -52,7 +54,7 @@ public class StudentsController {
 
     //todo 这个getCourseByFlag是否有问题？已经说是获取所有已发布的课程，那应该直接找flag为1的课程，为什么要提供一个flag
     //初始界面上显示一些课程供学生选择添加
-    @GetMapping(path = "/all")
+    @GetMapping(path = "/showCourse")
     public @ResponseBody List<Course> all(@RequestParam int flag) {
         return courseService.getCourseByFlag(flag);
     }
@@ -151,6 +153,38 @@ public class StudentsController {
         return noteService.getNotesByStudentID(studentID);
     }
 
+    //广场部分
+    //todo 问一下post的bean是自动生成还是手写的
+    //todo 问一下那个@query有什么用 需要用吗
+    //学生发布一条帖子
+    @PostMapping(path = "/addPost")
+    public @ResponseBody Post addPost(@Valid Post post) {
+        return postService.addPost(post);
+    }
+
+    //学生发布一条评论
+    @PostMapping(path = "/addComment")
+    public @ResponseBody Post addComment(@RequestParam int studentID, @RequestParam int postID, @RequestParam String text) {
+        return postService.addComment(studentID, postID, text);
+    }
+
+    //显示所有的帖子
+    @PostMapping(path = "/showAllPost")
+    public @ResponseBody List<Post> showAllPost(@RequestParam int courseID) {
+        return postService.allPost(courseID);
+    }
+
+    //显示一条具体的帖子
+    @PostMapping(path = "/showPost")
+    public @ResponseBody Post showPost(@RequestParam int taskID) {
+        return postService.showPost(taskID);
+    }
+
+    //给帖子点赞 返回值为成功之后帖子现在的点赞数
+    @PostMapping(path = "/clap")
+    public @ResponseBody int clap(@RequestParam int postID) {
+        return postService.clap(postID);
+    }
 
 
 }
