@@ -2,13 +2,14 @@ package com.adweb.adwebserver.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.Table;
 
 public class PostNode {
     private String name;
     private String avatar;
     private String content;
-
     public PostNode(String name, String avatar, String content) {
         this.name = name;
         this.avatar = avatar;

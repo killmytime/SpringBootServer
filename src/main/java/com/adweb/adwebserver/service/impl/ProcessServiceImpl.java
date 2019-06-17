@@ -1,8 +1,10 @@
 package com.adweb.adwebserver.service.impl;
 
+import com.adweb.adwebserver.domain.Course;
 import com.adweb.adwebserver.domain.PresentNode;
 import com.adweb.adwebserver.domain.ProcessNode;
 import com.adweb.adwebserver.domain.UserProcess;
+import com.adweb.adwebserver.domain.repository.CourseRepository;
 import com.adweb.adwebserver.domain.repository.UserProcessRepository;
 import com.adweb.adwebserver.service.ProcessService;
 import com.alibaba.fastjson.JSONArray;
@@ -16,6 +18,8 @@ import java.util.List;
 public class ProcessServiceImpl implements ProcessService {
     @Autowired
     UserProcessRepository userProcessRepository;
+    @Autowired
+    CourseRepository courseRepository;
     @Override
     public boolean initProcess(int studentID, int courseID) {
         UserProcess userProcess=new UserProcess();
@@ -44,7 +48,10 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public List<UserProcess> getUserProcessesByCourseID(int courseID) {
+    public List<UserProcess> getUserProcessesByCourseID(int courseID,int teacherID) {
+        Course course=courseRepository.getCourseByCourseId(courseID);
+        if (course==null) return null;
+        if (course.getTeacherId()!=teacherID) return null;
         return userProcessRepository.getUserProcessesByCourseId(courseID);
     }
 }

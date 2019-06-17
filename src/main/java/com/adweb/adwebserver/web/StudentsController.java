@@ -52,7 +52,7 @@ public class StudentsController {
         return studentService.getStudent(student);
     }
 
-    //todo 这个getCourseByFlag是否有问题？已经说是获取所有已发布的课程，那应该直接找flag为1的课程，为什么要提供一个flag
+
     //初始界面上显示一些课程供学生选择添加
     @GetMapping(path = "/showCourse")
     public @ResponseBody List<Course> all(@RequestParam int flag) {
@@ -62,8 +62,6 @@ public class StudentsController {
     //学生加入一门课
     @PostMapping(path = "/joinCourse")
     public @ResponseBody boolean joinCourse(@RequestParam int studentID, int courseID) {
-        //目前学生获得所有课程列表是通过枚举user_process表中的courseID，但是要加入新的课程，是通过加新的user_process吗？
-        //还是CourseService中添加学生加入课程的方法？如果这样没法做 因为course表中没有学生的信息
         return processService.initProcess(studentID, courseID);
     }
 
@@ -73,7 +71,12 @@ public class StudentsController {
     List<Course> allCourse(@RequestParam int studentID) {
         return courseService.getCourseByStudentID(studentID);
     }
-
+    //查看学生是否有某门特定的课
+    @GetMapping(path = "/hasCourse")
+    public @ResponseBody
+    Boolean hasCourse(@RequestParam  int courseID,@RequestParam int studentID){
+        return processService.getUserProcess(courseID,studentID)!=null;
+    }
     //根据具体课程的id获取具体的一门课
     @GetMapping(path = "/detailCourse")
     public @ResponseBody Course detailCourse(@RequestParam int courseID) {
@@ -85,6 +88,7 @@ public class StudentsController {
     @GetMapping(path = "/getContent")
     public @ResponseBody
     Content getContent(@RequestParam int studentID,@RequestParam String contentID ){
+        //点击某一章内容的时候自动生成task
         taskService.generateUserTasks(studentID,contentID);
         return contentService.getContentByContentID(contentID);
     }
@@ -98,7 +102,6 @@ public class StudentsController {
 
 
     //更新学生学习进度 学生退出后自动更新
-    //todo ProcessService中modifyProcess感觉要修改
     @GetMapping(path = "/updateProcess")
     public @ResponseBody boolean updateProcess(@RequestParam int studentID, int courseID, PresentNode presentNode, ProcessNode processNode) {
         return processService.modifyProcess(studentID, courseID, presentNode, processNode);
@@ -114,8 +117,6 @@ public class StudentsController {
     @GetMapping(path = "/showTask")
     public @ResponseBody UserTasks showTasks(@RequestParam int taskID) {
         return taskService.getUserTasksByTaskID(taskID);
-        //todo askService加一个getUserTaskByTaskID
-        //getStudentsTasksByCourseID是否需要？获得一整门课的task用于什么场景？
     }
 
     //学生答题
@@ -176,8 +177,17 @@ public class StudentsController {
         return postService.clap(postID);
     }
 
-    //Todo 删帖功能待加入
+    //学生根据studentID查看自己的帖子
+    @GetMapping(path = "/myPost")
+    public @ResponseBody List<Post> myPost(@RequestParam int studentID) {
+        return postService.myPost(studentID);
+    }
 
-    //Todo 学生根据学生id查看所有的帖子
+    //学生删除一条帖子
+    @PostMapping(path = "/deletePost")
+    public @ResponseBody Post deletePost(@RequestParam int studentID, int postID) {
+        return postService.deletePost(studentID, postID);
+    }
+
 
 }

@@ -10,5 +10,5 @@ public interface ProcessService {
     boolean initProcess(int studentID, int courseID);
     boolean modifyProcess(int studentID, int courseID, PresentNode presentNode, ProcessNode processNode);
     UserProcess getUserProcess(int studentID, int courseID);
-    List<UserProcess> getUserProcessesByCourseID(int courseID);
+    List<UserProcess> getUserProcessesByCourseID(int courseID,int teacherID);
 }

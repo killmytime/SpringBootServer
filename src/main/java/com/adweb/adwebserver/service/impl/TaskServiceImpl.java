@@ -1,8 +1,10 @@
 package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.Content;
+import com.adweb.adwebserver.domain.Course;
 import com.adweb.adwebserver.domain.UserTasks;
 import com.adweb.adwebserver.domain.repository.ContentRepository;
+import com.adweb.adwebserver.domain.repository.CourseRepository;
 import com.adweb.adwebserver.domain.repository.UserTasksRepository;
 import com.adweb.adwebserver.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ public class TaskServiceImpl implements TaskService {
     UserTasksRepository userTasksRepository;
     @Autowired
     ContentRepository contentRepository;
+    @Autowired
+    CourseRepository courseRepository;
     @Override
     public List<UserTasks> getUserTasksByStudentID(int studentID) {
         List<UserTasks> userTasks=userTasksRepository.getUserTasksByStudentId(studentID);
@@ -46,7 +50,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<UserTasks> getStudentsTasksByCourseID(int courseID) {
+    public List<UserTasks> getStudentsTasksByCourseID(int courseID,int teacherID) {
+        Course course=courseRepository.getCourseByCourseId(courseID);
+        if (course==null) return null;
+        if (course.getTeacherId()!=teacherID) return null;
         return userTasksRepository.getUserTasksByCourseId(courseID);
     }
 

@@ -59,7 +59,7 @@ public class StudentServiceImpl implements StudentService {
     //@Override
     public List<Course> getAllCourse(int studentID) {
         //return courseRepository.getCoursesByStudentId(studentID);
-        return null;
+        return courseRepository.getCoursesByFlag(1);//已经发布的课程
     }
 
     //@Override

@@ -14,4 +14,6 @@ public interface PostRepository extends CrudRepository<Post,Long> {
     //Collection<Student> findStudentsByName(String name);
     Post getPostByPostId(int postID);
     List<Post> getPostByCourseId(int courseID);
+    List<Post> getPostByStudentId(int student);
+    Post removePostByStudentIdAndPostId(int studentID, int postID);
 }

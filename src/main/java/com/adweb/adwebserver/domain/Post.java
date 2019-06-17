@@ -4,14 +4,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
+@Component
 @Entity
+@Table(name = "post", schema = "web")
 public class Post {
     private int postId;
     private int studentId;
