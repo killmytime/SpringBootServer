@@ -2,15 +2,17 @@ package com.adweb.adwebserver.service.impl;
 
 import com.adweb.adwebserver.domain.Post;
 import com.adweb.adwebserver.domain.PostNode;
+import com.adweb.adwebserver.domain.Student;
 import com.adweb.adwebserver.domain.repository.PostRepository;
 import com.adweb.adwebserver.service.PostService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class PostServiceImpl implements PostService {
     @Autowired
     PostRepository postRepository;
@@ -22,8 +24,8 @@ public class PostServiceImpl implements PostService {
 
     //todo 讨论一下这样是否正确
     @Override
-    public Post addComment(int studentID, int postID, String text) {
-        PostNode postNode = new PostNode(studentID, text);
+    public Post addComment( int postID, String text, Student student) {
+        PostNode postNode = new PostNode(student.getName(),student.getAvatar(),text);
         Post post0 = postRepository.getPostByPostId(postID);
         JSONArray textList = post0.getText();
         textList.add(JSONObject.toJSON(postNode));

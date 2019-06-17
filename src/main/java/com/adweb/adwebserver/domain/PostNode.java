@@ -1,15 +1,12 @@
 package com.adweb.adwebserver.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
-@Component
 @Data
+@AllArgsConstructor
 public class PostNode {
-    int studentID;
-    String content;
-    public PostNode(int studentID, String content) {
-        this.studentID = studentID;
-        this.content = content;
-    }
+    private String name;
+    private String avatar;
+    private String content;
 }

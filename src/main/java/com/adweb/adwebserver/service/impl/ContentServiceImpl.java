@@ -4,7 +4,9 @@ import com.adweb.adwebserver.domain.Content;
 import com.adweb.adwebserver.domain.repository.ContentRepository;
 import com.adweb.adwebserver.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ContentServiceImpl implements ContentService {
     @Autowired
     ContentRepository contentRepository;

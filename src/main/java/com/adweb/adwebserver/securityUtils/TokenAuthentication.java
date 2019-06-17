@@ -22,12 +22,12 @@ public class TokenAuthentication {
     static final String HEADER_STRING = "Authorization";// 存放Token的Header Key
 
     // JWT生成方法
-    public static void addAuthentication(HttpServletResponse response, String username) {
+    public static void addAuthentication(HttpServletResponse response, String username,String authority) {
 
         // 生成JWT
         String JWT = Jwts.builder()
                 // 保存权限（角色）
-                .claim("authorities", "ROLE_ADMIN,AUTH_WRITE")
+                .claim("authorities", authority)
                 // 用户名写入标题
                 .setSubject(username)
                 // 有效期设置

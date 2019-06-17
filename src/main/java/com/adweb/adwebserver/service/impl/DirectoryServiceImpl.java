@@ -5,7 +5,9 @@ import com.adweb.adwebserver.domain.repository.CourseRepository;
 import com.adweb.adwebserver.service.DirectoryService;
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DirectoryServiceImpl implements DirectoryService {
     @Autowired
     CourseRepository courseRepository;

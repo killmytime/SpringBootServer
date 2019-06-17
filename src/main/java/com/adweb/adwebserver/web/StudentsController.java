@@ -80,18 +80,12 @@ public class StudentsController {
         return courseService.getCourseByID(courseID);
     }
 
-    //todo 是否需要
-    //更新学生学习课程的信息 比如学习进度等
-    @GetMapping(path = "/updateCourse")
-    public @ResponseBody Course updateCourse(@RequestParam int studentID, @RequestParam int courseID) {
-        //return studentService.update(@Valid Course course)
-        return null;
-    }
 
     //根据章节获取具体的学习内容(学生点击某一章，进入学习界面)
     @GetMapping(path = "/getContent")
     public @ResponseBody
-    Content getContent(@RequestParam String contentID ){
+    Content getContent(@RequestParam int studentID,@RequestParam String contentID ){
+        taskService.generateUserTasks(studentID,contentID);
         return contentService.getContentByContentID(contentID);
     }
 
@@ -102,8 +96,6 @@ public class StudentsController {
         return processService.getUserProcess(studentID, courseID);
     }
 
-    //todo 初始化学习进度？
-    //每加一门课就init学习进度，应该可以吧
 
     //更新学生学习进度 学生退出后自动更新
     //todo ProcessService中modifyProcess感觉要修改
@@ -111,8 +103,6 @@ public class StudentsController {
     public @ResponseBody boolean updateProcess(@RequestParam int studentID, int courseID, PresentNode presentNode, ProcessNode processNode) {
         return processService.modifyProcess(studentID, courseID, presentNode, processNode);
     }
-
-    //todo 点击一个章节的时候生成任务？
 
     //查看学生所有任务
     @GetMapping(path = "/getTask")
@@ -123,15 +113,14 @@ public class StudentsController {
     //学生点击一个任务，显示任务
     @GetMapping(path = "/showTask")
     public @ResponseBody UserTasks showTasks(@RequestParam int taskID) {
-        //return taskService.getUserTasksByTaskID(taskID);
-        return null;
+        return taskService.getUserTasksByTaskID(taskID);
         //todo askService加一个getUserTaskByTaskID
         //getStudentsTasksByCourseID是否需要？获得一整门课的task用于什么场景？
     }
 
     //学生答题
     @GetMapping(path = "/setAnswer")
-    public boolean setAnswer(@RequestParam int studentID, String courseID, String answer) {
+    public boolean setAnswer(@RequestParam int studentID, @RequestParam String courseID,@RequestParam String answer) {
         return taskService.setAnswer(studentID, courseID, answer);
     }
 
@@ -154,8 +143,7 @@ public class StudentsController {
     }
 
     //广场部分
-    //todo 问一下post的bean是自动生成还是手写的
-    //todo 问一下那个@query有什么用 需要用吗
+
     //学生发布一条帖子
     @PostMapping(path = "/addPost")
     public @ResponseBody Post addPost(@Valid Post post) {
@@ -165,7 +153,9 @@ public class StudentsController {
     //学生发布一条评论
     @PostMapping(path = "/addComment")
     public @ResponseBody Post addComment(@RequestParam int studentID, @RequestParam int postID, @RequestParam String text) {
-        return postService.addComment(studentID, postID, text);
+        Student student=new Student();
+        student.setStudentId(studentID);
+        return postService.addComment(postID,text, studentService.getStudent(student));
     }
 
     //显示所有的帖子
@@ -176,8 +166,8 @@ public class StudentsController {
 
     //显示一条具体的帖子
     @PostMapping(path = "/showPost")
-    public @ResponseBody Post showPost(@RequestParam int taskID) {
-        return postService.showPost(taskID);
+    public @ResponseBody Post showPost(@RequestParam int postID) {
+        return postService.showPost(postID);
     }
 
     //给帖子点赞 返回值为成功之后帖子现在的点赞数
@@ -186,5 +176,8 @@ public class StudentsController {
         return postService.clap(postID);
     }
 
+    //Todo 删帖功能待加入
+
+    //Todo 学生根据学生id查看所有的帖子
 
 }

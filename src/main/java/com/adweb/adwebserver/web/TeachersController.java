@@ -1,12 +1,15 @@
 package com.adweb.adwebserver.web;
 
+import com.adweb.adwebserver.domain.Content;
 import com.adweb.adwebserver.domain.Course;
 import com.adweb.adwebserver.domain.Teacher;
 import com.adweb.adwebserver.domain.UserProcess;
 import com.adweb.adwebserver.domain.repository.TeacherRepository;
+import com.adweb.adwebserver.service.ContentService;
 import com.adweb.adwebserver.service.CourseService;
 import com.adweb.adwebserver.service.ProcessService;
 import com.adweb.adwebserver.service.TeacherService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +28,8 @@ public class TeachersController {
     CourseService courseService;
     @Autowired
     ProcessService processService;
-
+    @Autowired
+    ContentService contentService;
     @GetMapping(path = "/all")
     public @ResponseBody
     Iterable<Teacher> getTeachers() {
@@ -43,12 +47,14 @@ public class TeachersController {
     @PostMapping(path = "/register")
     public @ResponseBody
     Teacher register(@Valid Teacher teacher) {
+        //只要有手机号密码，名字，邀请码四要素即可
         return teacherService.register(teacher);
     }
 
     @PostMapping(path = "/login")
     public @ResponseBody
     Teacher login(@RequestParam String number, @RequestParam String password) {
+        System.out.println("enter in the login");
         return teacherService.login(number, password);
     }
 
@@ -93,7 +99,7 @@ public class TeachersController {
         return teacherService.getAllCourseByTeacherID(teacherID);
     }
 
-    //todo CourseServiceImpl类中postCourse方法是否需要修改
+
     //老师发布课程
     @PostMapping(path = "/postCourse")
     @ResponseBody Course postCourse(@Valid Course course) {
@@ -112,10 +118,14 @@ public class TeachersController {
     UserProcess getProcess(@RequestParam int studentID, @RequestParam int courseID) {
         return processService.getUserProcess(studentID, courseID);
     }
-    //todo 要不要写一个只根据courseID查看进度的，然后返回一个list？
+    //todo 要写一个只根据courseID查看进度的，然后返回一个list
 
+    //todo 老师查看学生的任务
 
-    //todo 需要写update content、directory什么的吗 还是直接设置成添加后不能修改 简单一点？
-
+    //todo 需要写get|add|modify content、directory什么的吗 还是直接设置成添加后不能修改 简单一点？
+    @PostMapping(path = "/modifyContent")
+    Content modifyContent(@Valid Content content){
+        return contentService.modifyContent(content);
+    }
 
 }

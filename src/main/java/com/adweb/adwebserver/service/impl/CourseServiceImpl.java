@@ -6,10 +6,11 @@ import com.adweb.adwebserver.domain.repository.CourseRepository;
 import com.adweb.adwebserver.domain.repository.UserProcessRepository;
 import com.adweb.adwebserver.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
     CourseRepository courseRepository;
@@ -48,8 +49,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course postCourse(Course course) {
         Course course1=courseRepository.getCourseByCourseId(course.getCourseId());
-        if (0==course1.getFlag())
-        return courseRepository.save(course1);
+        if (0==course1.getFlag()) {
+            course1.setFlag(1);
+            return courseRepository.save(course1);
+        }
         else return null;
     }
 

@@ -4,9 +4,10 @@ import com.adweb.adwebserver.domain.UserNotes;
 import com.adweb.adwebserver.domain.repository.UserNotesRepository;
 import com.adweb.adwebserver.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class NoteServiceImpl implements NoteService {
     @Autowired
     UserNotesRepository userNotesRepository;

@@ -8,7 +8,11 @@ import com.adweb.adwebserver.service.ProcessService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public class ProcessServiceImpl implements ProcessService {
     @Autowired
     UserProcessRepository userProcessRepository;
@@ -37,5 +41,10 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public UserProcess getUserProcess(int studentID, int courseID) {
         return userProcessRepository.getUserProcessesByStudentIdAndCourseId(studentID,courseID);
+    }
+
+    @Override
+    public List<UserProcess> getUserProcessesByCourseID(int courseID) {
+        return userProcessRepository.getUserProcessesByCourseId(courseID);
     }
 }

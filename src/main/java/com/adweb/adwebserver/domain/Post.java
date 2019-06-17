@@ -52,7 +52,7 @@ public class Post {
 
     @Basic
     @Type(type = "json")
-    @Column(name = "test")
+    @Column(name = "text")
     public JSONArray getText() {
         return text;
     }

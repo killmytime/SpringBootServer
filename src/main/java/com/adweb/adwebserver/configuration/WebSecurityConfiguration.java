@@ -1,8 +1,9 @@
 package com.adweb.adwebserver.configuration;
 
+import com.adweb.adwebserver.securityUtils.filter.JWTStudentFilter;
 import com.adweb.adwebserver.securityUtils.provider.CustomAuthenticationProvider;
 import com.adweb.adwebserver.securityUtils.filter.JWTAuthenticationFilter;
-import com.adweb.adwebserver.securityUtils.filter.JWTLoginFilter;
+import com.adweb.adwebserver.securityUtils.filter.JWTTeacherFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,23 +27,22 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 // 所有 /login 的POST请求 都放行
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                // 权限检查
-                .antMatchers("/course").hasAuthority("AUTH_WRITE")
-                // 角色检查
-                .antMatchers("/admin").hasRole("ADMIN")
-                // 所有请求需要身份认证
+                // 角色检查 所有请求需要身份认证
+                .antMatchers("/students").hasRole("STUDENT")
+                .antMatchers("/teachers").hasRole("TEACHER")
                 .anyRequest().authenticated()
                 .and()
-                // 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
-                .addFilterBefore(new JWTLoginFilter("/teachers/login", authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class)
+                // 添加一个过滤器 所有访问 /login 的请求交给 JWTTeacherFilter 来处理 这个类处理所有的JWT相关内容
+                .addFilterBefore(new JWTTeacherFilter("/teachers/login", authenticationManager()),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTTeacherFilter("/teachers/register",authenticationManager()),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTStudentFilter("/students/login",authenticationManager()),UsernamePasswordAuthenticationFilter.class)
                 // 添加一个过滤器验证其他请求的Token是否合法
                 .addFilterBefore(new JWTAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         // 使用自定义身份验证组件
         auth.authenticationProvider(new CustomAuthenticationProvider());
 
