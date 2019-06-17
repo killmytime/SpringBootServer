@@ -22,10 +22,13 @@ public class StudentServiceImpl implements StudentService {
     private CourseRepository courseRepository;
 
     @Override
-    public Student login(String wechatId) {
-        /*Student st = studentRepository.getStudentByWechatId(wechatId);
-        studentRepository.save(st);*/
-        return studentRepository.getStudentByWechatId(wechatId);
+    public Student login(Student student) {
+        Student student1=studentRepository.getStudentByWechatId(student.getWechatId());
+        if (student1==null)
+           return studentRepository.save(student);
+        student1.setAvatar(student.getAvatar());
+        student1.setName(student.getName());
+        return studentRepository.save(student1);//登陆时只修改昵称，头像信息
     }
 
     @Override
@@ -45,6 +48,11 @@ public class StudentServiceImpl implements StudentService {
         student = studentRepository.getStudentByStudentId(studentID);
 
         return student;
+    }
+
+    @Override
+    public Student getStudentByWechatID(String wechatID) {
+        return studentRepository.getStudentByWechatId(wechatID);
     }
 
     //todo courseRepository里要实现下面两个方法

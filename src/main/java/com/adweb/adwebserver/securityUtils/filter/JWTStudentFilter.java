@@ -1,7 +1,10 @@
 package com.adweb.adwebserver.securityUtils.filter;
 
 import com.adweb.adwebserver.domain.JSONResult;
+import com.adweb.adwebserver.domain.Student;
 import com.adweb.adwebserver.securityUtils.TokenAuthentication;
+import com.adweb.adwebserver.service.StudentService;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,9 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JWTStudentFilter extends AbstractAuthenticationProcessingFilter {
-    public JWTStudentFilter(String url, AuthenticationManager authManager) {
+    StudentService studentService;
+    public JWTStudentFilter(String url, AuthenticationManager authManager, ApplicationContext applicationContext) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
+        this.studentService=applicationContext.getBean(StudentService.class);
     }
 
     @Override
@@ -25,11 +30,20 @@ public class JWTStudentFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException {
         // 返回一个验证令牌
-        String number = req.getParameter("number");
+        String name = req.getParameter("name");
         String wechatID = req.getParameter("wechatID");
-        if (number == null || wechatID == null) return null;
+        String avatar=req.getParameter("avatar");
+        if (name == null || wechatID == null||avatar==null) return null;
+        Student student=new Student();
+        student.setWechatId(wechatID);
+        student.setAvatar(avatar);
+        student.setName(name);
+        if (studentService.getStudentByWechatID(wechatID)==null){
+            studentService.login(student);
+        }
+        studentService.login(student);
         return getAuthenticationManager().authenticate(
-                new UsernamePasswordAuthenticationToken(number, wechatID)
+                new UsernamePasswordAuthenticationToken(name, wechatID)
         );
     }
 

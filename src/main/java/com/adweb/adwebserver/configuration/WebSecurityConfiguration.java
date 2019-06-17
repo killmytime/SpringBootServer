@@ -4,12 +4,15 @@ import com.adweb.adwebserver.securityUtils.filter.JWTStudentFilter;
 import com.adweb.adwebserver.securityUtils.provider.CustomAuthenticationProvider;
 import com.adweb.adwebserver.securityUtils.filter.JWTAuthenticationFilter;
 import com.adweb.adwebserver.securityUtils.filter.JWTTeacherFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -33,9 +36,9 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 // 添加一个过滤器 所有访问 /login 的请求交给 JWTTeacherFilter 来处理 这个类处理所有的JWT相关内容
-                .addFilterBefore(new JWTTeacherFilter("/teachers/login", authenticationManager()),UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JWTTeacherFilter("/teachers/register",authenticationManager()),UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JWTStudentFilter("/students/login",authenticationManager()),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTTeacherFilter("/teachers/login", authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTTeacherFilter("/teachers/register",authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTStudentFilter("/students/login",authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
                 // 添加一个过滤器验证其他请求的Token是否合法
                 .addFilterBefore(new JWTAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class);
@@ -45,6 +48,5 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) {
         // 使用自定义身份验证组件
         auth.authenticationProvider(new CustomAuthenticationProvider());
-
     }
 }

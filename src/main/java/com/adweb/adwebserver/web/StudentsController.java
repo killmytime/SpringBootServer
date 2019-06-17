@@ -35,8 +35,8 @@ public class StudentsController {
         return studentRepository.findAll();
     }
     @GetMapping(path = "/login")
-    public @ResponseBody Student login(@RequestParam String wechatId) {
-        return studentService.login(wechatId);
+    public @ResponseBody Student login(@Valid Student student) {
+        return studentService.login(student);
     }
 
     @PostMapping(path = "/update")

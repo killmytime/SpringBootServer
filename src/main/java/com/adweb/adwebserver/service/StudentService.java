@@ -9,9 +9,10 @@ import java.util.List;
 
 @Service
 public interface StudentService {
-    Student login(String wechatId);
+    Student login(Student student);
     Student update(Student student);
     Student getStudent(Student student);
+    Student getStudentByWechatID(String wechatID);
     //List<Course> getAllCourse(int studentID);CourseService中已经有了
     //Course getDetailCourse(int studentID, int courseID);CourseService中已经有了
     /*
