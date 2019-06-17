@@ -22,7 +22,6 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(post);
     }
 
-    //todo 讨论一下这样是否正确
     @Override
     public Post addComment( int postID, String text, Student student) {
         PostNode postNode = new PostNode(student.getName(),student.getAvatar(),text);
@@ -51,6 +50,16 @@ public class PostServiceImpl implements PostService {
         post0.setClap(++clap);
         postRepository.save(post0);
         return clap;
+    }
+
+    @Override
+    public List<Post> myPost(int studentID) {
+        return postRepository.getPostByStudentId(studentID);
+    }
+
+    @Override
+    public Post deletePost(int studentID, int postID) {
+        return postRepository.removePostByStudentIdAndPostId(studentID, postID);
     }
 
 }

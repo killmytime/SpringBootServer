@@ -1,14 +1,9 @@
 package com.adweb.adwebserver.web;
 
-import com.adweb.adwebserver.domain.Content;
-import com.adweb.adwebserver.domain.Course;
-import com.adweb.adwebserver.domain.Teacher;
-import com.adweb.adwebserver.domain.UserProcess;
+import com.adweb.adwebserver.domain.*;
 import com.adweb.adwebserver.domain.repository.TeacherRepository;
-import com.adweb.adwebserver.service.ContentService;
-import com.adweb.adwebserver.service.CourseService;
-import com.adweb.adwebserver.service.ProcessService;
-import com.adweb.adwebserver.service.TeacherService;
+import com.adweb.adwebserver.service.*;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +25,10 @@ public class TeachersController {
     ProcessService processService;
     @Autowired
     ContentService contentService;
+    @Autowired
+    TaskService taskService;
+    @Autowired
+    DirectoryService directoryService;
     @GetMapping(path = "/all")
     public @ResponseBody
     Iterable<Teacher> getTeachers() {
@@ -92,10 +91,17 @@ public class TeachersController {
         return courseService.modifyCourse(course);
     }
 
+    //老师获取自己的一门课程
+    //todo 要根据teacherID来查吗 不然可能会查到不是自己的课程
+    @GetMapping(path = "/getOneCourse")
+    public @ResponseBody Course getOneCourse(@RequestParam int courseID, @RequestParam int teacherID) {
+        return courseService.getCourseByID(courseID);
+    }
+
     //老师获取所有自己的课程
-    @GetMapping(path = "/getCourse")
+    @GetMapping(path = "/getAllCourse")
     public @ResponseBody
-    List<Course> getCourse(@RequestParam int teacherID) {
+    List<Course> getAllCourse(@RequestParam int teacherID) {
         return teacherService.getAllCourseByTeacherID(teacherID);
     }
 
@@ -118,14 +124,50 @@ public class TeachersController {
     UserProcess getProcess(@RequestParam int studentID, @RequestParam int courseID) {
         return processService.getUserProcess(studentID, courseID);
     }
-    //todo 要写一个只根据courseID查看进度的，然后返回一个list
 
-    //todo 老师查看学生的任务
-
-    //todo 需要写get|add|modify content、directory什么的吗 还是直接设置成添加后不能修改 简单一点？
-    @PostMapping(path = "/modifyContent")
-    Content modifyContent(@Valid Content content){
-        return contentService.modifyContent(content);
+    //老师查看一门课程所有学生的学习进度
+    //todo 是否需要根据teacherID来查
+    @GetMapping(path = "/allProcess")
+    public @ResponseBody List<UserProcess> allProcess(@RequestParam int courseID) {
+        return processService.getUserProcessesByCourseID(courseID);
     }
+
+    //老师查看一门课所有学生的任务
+    //todo 是否需要根据teacherID来查
+    @GetMapping(path = "/allTask")
+    public @ResponseBody List<UserTasks> allTask(@RequestParam int courseID) {
+        return taskService.getStudentsTasksByCourseID(courseID);
+    }
+
+    //老师获取content
+    @GetMapping(path = "/getContent")
+    public @ResponseBody Content getContent(@RequestParam String contentID) {
+        return contentService.getContentByContentID(contentID);
+    }
+
+    //老师添加content
+    @PostMapping(path = "/addContent")
+    public @ResponseBody Content addContent(@Valid Content content) {
+        return contentService.addContent(content);
+    }
+
+    //老师修改content
+    @PostMapping(path = "/modifyContent")
+    public @ResponseBody Content modifyContent(@Valid Content content) {
+        return  contentService.modifyContent(content);
+    }
+
+    //老师添加directory
+    @PostMapping(path = "/addDirectory")
+    public @ResponseBody Course addDirectory(@RequestParam int courseID, @RequestParam JSONArray list) {
+        return directoryService.addNewDirectory(courseID, list);
+    }
+
+    //老师修改directory
+    @PostMapping(path = "/modifyDirectory")
+    public @ResponseBody Course modifyDirectory(@RequestParam int courseID, @RequestParam JSONArray list) {
+        return directoryService.modifyDirectory(courseID, list);
+    }
+
 
 }

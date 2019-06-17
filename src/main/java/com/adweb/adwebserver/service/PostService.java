@@ -11,4 +11,6 @@ public interface PostService {
     List<Post> allPost(int courseID);
     Post showPost(int postID);
     int clap(int postID);
+    List<Post> myPost(int studentID);
+    Post deletePost(int studentID, int postID);
 }
