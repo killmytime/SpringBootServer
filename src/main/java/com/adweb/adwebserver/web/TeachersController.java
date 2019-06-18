@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,19 +64,21 @@ public class TeachersController {
 
     @PostMapping(path = "/update")
     public @ResponseBody
-    Teacher update(@Valid Teacher teacher, @RequestParam MultipartFile avatar) {
+    Teacher update(@Valid Teacher teacher,@RequestParam MultipartFile header)throws IOException {
         System.out.println(2222222);
-        if (avatar!=null) {
+        System.out.println(teacher.toString());
+        if (header!=null) {
           System.out.println(1111111);
-            String fileName = avatar.getOriginalFilename();
+            String fileName = header.getOriginalFilename();
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             fileName = UUID.randomUUID() + suffixName;
-            try {
-                avatar.transferTo(new File(imgPath + fileName));
-                teacher.setAvatar("localhost:8080/img/"+fileName);
-            } catch (Exception e) {
-                System.out.println("******");
-            }
+            System.out.println(imgPath+fileName);
+
+            //header.transferTo(new File("C:\\Users\\aero\\Desktop\\hello.jpg"));
+            header.transferTo(new File(imgPath+fileName));
+
+            teacher.setAvatar("47.101.189.80:28080/img/"+fileName);//Todo 更新服务器的时候需要测一下
+            System.out.println(teacher.toString());
         }
         return teacherService.update(teacher);
     }

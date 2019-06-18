@@ -106,4 +106,17 @@ public class Teacher {
     public int hashCode() {
         return Objects.hash(teacherId, number, name, email, invitation, password, avatar);
     }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherId=" + teacherId +
+                ", number='" + number + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", invitation='" + invitation + '\'' +
+                ", password='" + password + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
+    }
 }

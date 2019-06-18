@@ -1,11 +1,15 @@
 package com.adweb.adwebserver.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping(path = "/test")
 public class HelloController {
+    @GetMapping(path = "/hello")
+    public String hello(){
+        String hello="hello";
+        System.out.println("hello");
+        return hello;
+    }
 }
