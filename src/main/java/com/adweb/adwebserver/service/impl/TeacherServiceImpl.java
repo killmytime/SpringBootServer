@@ -23,7 +23,9 @@ public class TeacherServiceImpl implements TeacherService {
     private CourseRepository courseRepository;
     @Override
     public Teacher register(Teacher teacher) {
+        if (teacherRepository.findTeacherByNumberAndPassword(teacher.getNumber(),teacher.getPassword())==null)
         return teacherRepository.save(teacher);
+        return null;
     }
 
     @Override

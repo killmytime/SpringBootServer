@@ -4,17 +4,21 @@ import com.adweb.adwebserver.domain.*;
 import com.adweb.adwebserver.domain.repository.TeacherRepository;
 import com.adweb.adwebserver.service.*;
 import com.alibaba.fastjson.JSONArray;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(path = "/teachers")
 public class TeachersController {
+
+    final String imgPath="/image/";
     @Autowired
     TeacherRepository teacherRepository;
     @Autowired
@@ -59,7 +63,20 @@ public class TeachersController {
 
     @PostMapping(path = "/update")
     public @ResponseBody
-    Teacher update(@Valid Teacher teacher) {
+    Teacher update(@Valid Teacher teacher, @RequestParam MultipartFile avatar) {
+        System.out.println(2222222);
+        if (avatar!=null) {
+          System.out.println(1111111);
+            String fileName = avatar.getOriginalFilename();
+            String suffixName = fileName.substring(fileName.lastIndexOf("."));
+            fileName = UUID.randomUUID() + suffixName;
+            try {
+                avatar.transferTo(new File(imgPath + fileName));
+                teacher.setAvatar("localhost:8080/img/"+fileName);
+            } catch (Exception e) {
+                System.out.println("******");
+            }
+        }
         return teacherService.update(teacher);
     }
 
