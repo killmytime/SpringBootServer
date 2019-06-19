@@ -32,6 +32,8 @@ public class TeachersController {
     TaskService taskService;
     @Autowired
     DirectoryService directoryService;
+    @Autowired
+    FileService fileService;
     @GetMapping(path = "/all")
     public @ResponseBody
     Iterable<Teacher> getTeachers() {
@@ -64,13 +66,7 @@ public class TeachersController {
     public @ResponseBody
     Teacher update(@Valid Teacher teacher,@RequestParam MultipartFile header)throws IOException {
         if (header!=null) {
-            String fileName = header.getOriginalFilename();
-            String suffixName = fileName.substring(fileName.lastIndexOf("."));
-            fileName = UUID.randomUUID() + suffixName;
-            System.out.println(fileName);
-           // header.transferTo(new File("C:/Users/aero/Desktop/hello.jpg"));
-            header.transferTo(new File("/"+fileName));
-            teacher.setAvatar("47.101.189.80:28080/img/"+fileName);//Todo 更新服务器的时候需要测一下
+            teacher.setAvatar(fileService.uploadFile(header));//Todo 更新服务器的时候需要测一下
             System.out.println(teacher.toString());
         }
         return teacherService.update(teacher);
@@ -78,7 +74,7 @@ public class TeachersController {
 
     @GetMapping(path = "/info")
     public @ResponseBody
-    Teacher getInfo(@RequestParam int teacherId) {
+    Teacher getInfo(@RequestParam Integer teacherId) {
         System.out.println("enter the info");
         Teacher teacher = new Teacher();
         teacher.setTeacherId(teacherId);
@@ -109,14 +105,14 @@ public class TeachersController {
     //要根据teacherID来查吗 不然可能会查到不是自己的课程
     //解释，如果加上teacherID校验也没有必要，因为获得的course其实是公开的消息，对应的，应当在对课程进行编辑和删除处理的时候加上teacherID，这里可以不用了
     @GetMapping(path = "/getOneCourse")
-    public @ResponseBody Course getOneCourse(@RequestParam int courseId) {
+    public @ResponseBody Course getOneCourse(@RequestParam Integer courseId) {
         return courseService.getCourseByID(courseId);
     }
 
     //老师获取所有自己的课程
     @GetMapping(path = "/getAllCourse")
     public @ResponseBody
-    List<Course> getAllCourse(@RequestParam int teacherId) {
+    List<Course> getAllCourse(@RequestParam Integer teacherId) {
         return teacherService.getAllCourseByTeacherID(teacherId);
     }
 
@@ -136,21 +132,21 @@ public class TeachersController {
     //获取学生的学习进度（用途：1.老师查看学生学习进度2.学生继续学习接下来的内容3....）
     @GetMapping(path = "/checkProcess")
     public @ResponseBody
-    UserProcess getProcess(@RequestParam int studentId, @RequestParam int courseId) {
+    UserProcess getProcess(@RequestParam Integer studentId, @RequestParam Integer courseId) {
         return processService.getUserProcess(studentId, courseId);
     }
 
     //老师查看一门课程所有学生的学习进度
     // 是否需要根据teacherID来查 fixed
     @GetMapping(path = "/allProcess")
-    public @ResponseBody List<UserProcess> allProcess(@RequestParam int courseId,@RequestParam int teacherId) {
+    public @ResponseBody List<UserProcess> allProcess(@RequestParam Integer courseId,@RequestParam Integer teacherId) {
         return processService.getUserProcessesByCourseID(courseId,teacherId);
     }
 
     //老师查看一门课所有学生的任务
     // 是否需要根据teacherID来查 fixed
     @GetMapping(path = "/allTask")
-    public @ResponseBody List<UserTasks> allTask(@RequestParam int courseId,@RequestParam int teacherId) {
+    public @ResponseBody List<UserTasks> allTask(@RequestParam Integer courseId,@RequestParam Integer teacherId) {
         return taskService.getStudentsTasksByCourseID(courseId,teacherId);
     }
 
@@ -162,7 +158,7 @@ public class TeachersController {
 
     //老师添加content
     @PostMapping(path = "/addContent")
-    public @ResponseBody Content addContent(@Valid Content content) {
+    public @ResponseBody Content addContent(@Valid Content content,@RequestParam MultipartFile[] files) {
         return contentService.addContent(content);
     }
 
@@ -174,13 +170,13 @@ public class TeachersController {
 
     //老师添加directory
     @PostMapping(path = "/addDirectory")
-    public @ResponseBody Course addDirectory(@RequestParam int courseId, @RequestParam JSONArray list) {
+    public @ResponseBody Course addDirectory(@RequestParam Integer courseId, @RequestParam JSONArray list) {
         return directoryService.addNewDirectory(courseId, list);
     }
 
     //老师修改directory
     @PostMapping(path = "/modifyDirectory")
-    public @ResponseBody Course modifyDirectory(@RequestParam int courseId, @RequestParam JSONArray list) {
+    public @ResponseBody Course modifyDirectory(@RequestParam Integer courseId, @RequestParam JSONArray list) {
         return directoryService.modifyDirectory(courseId, list);
     }
 
