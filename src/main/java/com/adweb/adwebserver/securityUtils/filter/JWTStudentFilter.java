@@ -30,6 +30,12 @@ public class JWTStudentFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException {
         // 返回一个验证令牌
+        if (req.getMethod().equals("OPTIONS")){
+            res.setStatus(HttpServletResponse.SC_OK);
+            res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
+            res.setHeader("Access-Control-Allow-Headers","*");
+            return null;
+        }
         res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
         String name = req.getParameter("name");
         String wechatID = req.getParameter("wechatID");
@@ -39,10 +45,9 @@ public class JWTStudentFilter extends AbstractAuthenticationProcessingFilter {
         student.setWechatId(wechatID);
         student.setAvatar(avatar);
         student.setName(name);
-        if (studentService.getStudentByWechatID(wechatID)==null){
-            studentService.login(student);
-        }
         studentService.login(student);
+        int studentId=studentService.getStudentByWechatID(wechatID).getStudentId();
+        res.setHeader("studentId", String.valueOf(studentId));
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(name, wechatID)
         );

@@ -34,6 +34,12 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public int getTeacherIdByNumberAndPassword(String number, String password) {
+        Teacher teacher=teacherRepository.findTeacherByNumberAndPassword(number,password);
+        return teacher!=null?teacher.getTeacherId():0;
+    }
+
+    @Override
     public Teacher update(Teacher teacher) {
         Teacher teacher0=teacherRepository.getTeacherByTeacherId(teacher.getTeacherId());
         teacher0.setNumber(teacher.getNumber());
@@ -46,7 +52,6 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher getTeacher(Teacher teacher) {
         int teacherID=teacher.getTeacherId();
-        System.out.println(teacher.toString());
         teacher =teacherRepository.getTeacherByTeacherId(teacherID);
         teacher.setPassword("");
         return teacher;

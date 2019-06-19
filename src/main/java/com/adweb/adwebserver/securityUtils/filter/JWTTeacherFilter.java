@@ -38,12 +38,17 @@ public class JWTTeacherFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException {
         // 返回一个验证令牌
+        if (req.getMethod().equals("OPTIONS")){
+            res.setStatus(HttpServletResponse.SC_OK);
+            res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
+            res.setHeader("Access-Control-Allow-Headers","*");
+            return null;
+        }
         res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
         String number=req.getParameter("number");
         String password=req.getParameter("password");
         if (number==null||password==null) return null;
         if (req.getRequestURI().contains("register")){
-            System.out.println("teacher_register");
             String invitation=req.getParameter("invitation");
             if (!invitation.equals(INVITATION)) return null;
             String name=req.getParameter("name");
@@ -56,10 +61,10 @@ public class JWTTeacherFilter extends AbstractAuthenticationProcessingFilter {
             if (teacherService.register(teacher)==null) return null;
         }
         if (req.getRequestURI().contains("login")){
-            System.out.println("teacher_login");
             if (teacherService.login(number,password)==null) return null;
-            System.out.println("login_success");
         }
+        int teacherId=teacherService.getTeacherIdByNumberAndPassword(number,password);
+        res.setHeader("teacherId", String.valueOf(teacherId));
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(number,password)
         );
@@ -76,7 +81,6 @@ public class JWTTeacherFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getOutputStream().println(JSONResult.fillResultString(500, "Internal Server Error!!!",null));

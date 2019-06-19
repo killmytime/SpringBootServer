@@ -44,7 +44,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudent(Student student) {
         int studentID = student.getStudentId();
-        System.out.println(student.toString());
         student = studentRepository.getStudentByStudentId(studentID);
 
         return student;

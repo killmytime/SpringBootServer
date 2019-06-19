@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 //这里是一个jwt的生成和校验的实现
 public class TokenAuthentication {
@@ -50,7 +51,7 @@ public class TokenAuthentication {
     public static Authentication getAuthentication(HttpServletRequest request) {
         // 从Header中拿到token
         String token = request.getHeader(HEADER_STRING);
-
+        System.out.println("!!!!"+token);
         if (token != null) {
             // 解析 Token
             Claims claims = Jwts.parser()
@@ -62,7 +63,7 @@ public class TokenAuthentication {
 
             // 拿用户名
             String user = claims.getSubject();
-
+            System.out.println("***********"+user);
             // 得到 权限（角色）
             List<GrantedAuthority> authorities =  AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
 

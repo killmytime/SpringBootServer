@@ -10,6 +10,7 @@ import java.util.List;
 public interface TeacherService {
     Teacher register(Teacher teacher);
     Teacher login(String number, String password);
+    int getTeacherIdByNumberAndPassword(String number,String password);
     Teacher update(Teacher teacher);
     Teacher getTeacher(Teacher teacher);//敏感信息设置为空
     boolean setPassword(Teacher teacher, String newPassword);

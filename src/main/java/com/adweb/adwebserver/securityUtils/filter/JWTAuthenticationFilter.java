@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
@@ -20,11 +21,29 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
                          ServletResponse response,
                          FilterChain filterChain)
             throws IOException, ServletException {
+        HttpServletRequest servletRequest= (HttpServletRequest) request;
+//        Enumeration names = servletRequest.getHeaderNames();
+//        System.out.println("===================================================================");
+//        while(names.hasMoreElements()){
+//            String name = (String) names.nextElement();
+//            System.out.println(name + ":" + servletRequest.getHeader(name));
+//        }
+//        System.out.println("===================================================================");
+//        System.out.println(servletRequest.getHeader("authorization"));
+        HttpServletResponse servletResponse=(HttpServletResponse)response;
+        if (servletRequest.getMethod().equals("OPTIONS")){
+            servletResponse.setStatus(HttpServletResponse.SC_OK);
+            servletResponse.setHeader("Access-Control-Allow-Origin",servletRequest.getHeader("Origin"));
+            servletResponse.setHeader("Access-Control-Allow-Headers","*");
+        }
+        else {
+        servletResponse.setHeader("Access-Control-Allow-Origin",servletRequest.getHeader("Origin"));
+        servletResponse.setHeader("Access-Control-Allow-Headers", "*");
         Authentication authentication = TokenAuthentication
-                .getAuthentication((HttpServletRequest) request);
-        ((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin",((HttpServletRequest)request).getHeader("Origin"));
+                .getAuthentication(servletRequest);
+        //((HttpServletResponse) response).setHeader("Access-Control-Allow-Origin",((HttpServletRequest)request).getHeader("Origin"));
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(servletRequest, servletResponse);}
     }
 }

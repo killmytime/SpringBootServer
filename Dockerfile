@@ -1,5 +1,5 @@
 FROM java:8
-VOLUME /tmp
+VOLUME /resource
 COPY target/adwebserver-1.0.0.jar server.jar
 RUN bash -c "touch /server.jar"
 EXPOSE 8080

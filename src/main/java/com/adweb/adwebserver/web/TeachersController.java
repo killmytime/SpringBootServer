@@ -18,8 +18,6 @@ import java.util.UUID;
 @Controller
 @RequestMapping(path = "/teachers")
 public class TeachersController {
-
-    final String imgPath="/image/";
     @Autowired
     TeacherRepository teacherRepository;
     @Autowired
@@ -65,18 +63,13 @@ public class TeachersController {
     @PostMapping(path = "/update")
     public @ResponseBody
     Teacher update(@Valid Teacher teacher,@RequestParam MultipartFile header)throws IOException {
-        System.out.println(2222222);
-        System.out.println(teacher.toString());
         if (header!=null) {
-          System.out.println(1111111);
             String fileName = header.getOriginalFilename();
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             fileName = UUID.randomUUID() + suffixName;
-            System.out.println(imgPath+fileName);
-
-            //header.transferTo(new File("C:\\Users\\aero\\Desktop\\hello.jpg"));
-            header.transferTo(new File(imgPath+fileName));
-
+            System.out.println(fileName);
+           // header.transferTo(new File("C:/Users/aero/Desktop/hello.jpg"));
+            header.transferTo(new File("/"+fileName));
             teacher.setAvatar("47.101.189.80:28080/img/"+fileName);//Todo 更新服务器的时候需要测一下
             System.out.println(teacher.toString());
         }
@@ -85,9 +78,10 @@ public class TeachersController {
 
     @GetMapping(path = "/info")
     public @ResponseBody
-    Teacher getInfo(@RequestParam int teacherID) {
+    Teacher getInfo(@RequestParam int teacherId) {
+        System.out.println("enter the info");
         Teacher teacher = new Teacher();
-        teacher.setTeacherId(teacherID);
+        teacher.setTeacherId(teacherId);
         return teacherService.getTeacher(teacher);
     }
 
@@ -115,15 +109,15 @@ public class TeachersController {
     //要根据teacherID来查吗 不然可能会查到不是自己的课程
     //解释，如果加上teacherID校验也没有必要，因为获得的course其实是公开的消息，对应的，应当在对课程进行编辑和删除处理的时候加上teacherID，这里可以不用了
     @GetMapping(path = "/getOneCourse")
-    public @ResponseBody Course getOneCourse(@RequestParam int courseID, @RequestParam int teacherID) {
-        return courseService.getCourseByID(courseID);
+    public @ResponseBody Course getOneCourse(@RequestParam int courseId) {
+        return courseService.getCourseByID(courseId);
     }
 
     //老师获取所有自己的课程
     @GetMapping(path = "/getAllCourse")
     public @ResponseBody
-    List<Course> getAllCourse(@RequestParam int teacherID) {
-        return teacherService.getAllCourseByTeacherID(teacherID);
+    List<Course> getAllCourse(@RequestParam int teacherId) {
+        return teacherService.getAllCourseByTeacherID(teacherId);
     }
 
 
@@ -142,28 +136,28 @@ public class TeachersController {
     //获取学生的学习进度（用途：1.老师查看学生学习进度2.学生继续学习接下来的内容3....）
     @GetMapping(path = "/checkProcess")
     public @ResponseBody
-    UserProcess getProcess(@RequestParam int studentID, @RequestParam int courseID) {
-        return processService.getUserProcess(studentID, courseID);
+    UserProcess getProcess(@RequestParam int studentId, @RequestParam int courseId) {
+        return processService.getUserProcess(studentId, courseId);
     }
 
     //老师查看一门课程所有学生的学习进度
     // 是否需要根据teacherID来查 fixed
     @GetMapping(path = "/allProcess")
-    public @ResponseBody List<UserProcess> allProcess(@RequestParam int courseID,@RequestParam int teacherID) {
-        return processService.getUserProcessesByCourseID(courseID,teacherID);
+    public @ResponseBody List<UserProcess> allProcess(@RequestParam int courseId,@RequestParam int teacherId) {
+        return processService.getUserProcessesByCourseID(courseId,teacherId);
     }
 
     //老师查看一门课所有学生的任务
     // 是否需要根据teacherID来查 fixed
     @GetMapping(path = "/allTask")
-    public @ResponseBody List<UserTasks> allTask(@RequestParam int courseID,@RequestParam int teacherID) {
-        return taskService.getStudentsTasksByCourseID(courseID,teacherID);
+    public @ResponseBody List<UserTasks> allTask(@RequestParam int courseId,@RequestParam int teacherId) {
+        return taskService.getStudentsTasksByCourseID(courseId,teacherId);
     }
 
     //老师获取content
     @GetMapping(path = "/getContent")
-    public @ResponseBody Content getContent(@RequestParam String contentID) {
-        return contentService.getContentByContentID(contentID);
+    public @ResponseBody Content getContent(@RequestParam String contentId) {
+        return contentService.getContentByContentID(contentId);
     }
 
     //老师添加content
@@ -180,14 +174,14 @@ public class TeachersController {
 
     //老师添加directory
     @PostMapping(path = "/addDirectory")
-    public @ResponseBody Course addDirectory(@RequestParam int courseID, @RequestParam JSONArray list) {
-        return directoryService.addNewDirectory(courseID, list);
+    public @ResponseBody Course addDirectory(@RequestParam int courseId, @RequestParam JSONArray list) {
+        return directoryService.addNewDirectory(courseId, list);
     }
 
     //老师修改directory
     @PostMapping(path = "/modifyDirectory")
-    public @ResponseBody Course modifyDirectory(@RequestParam int courseID, @RequestParam JSONArray list) {
-        return directoryService.modifyDirectory(courseID, list);
+    public @ResponseBody Course modifyDirectory(@RequestParam int courseId, @RequestParam JSONArray list) {
+        return directoryService.modifyDirectory(courseId, list);
     }
 
 
