@@ -8,9 +8,9 @@ import java.util.List;
 public interface PostService {
     Post addPost(Post post);
     Post addComment(int postID, String text, Student student);
-    List<Post> allPost(int courseID);
     Post showPost(int postID);
     int clap(int postID);
     List<Post> myPost(int studentID);
     Post deletePost(int studentID, int postID);
+    List<Post> getAllPost();
 }

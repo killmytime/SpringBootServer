@@ -34,6 +34,7 @@ public class StudentsController {
         //This returns a JSON or XML with the students
         return studentRepository.findAll();
     }
+    //这里由于一些历史遗留问题，不改了，，，
     @GetMapping(path = "/login")
     public @ResponseBody Student login(@Valid Student student) {
         if (student.getStudentId() == null) {
@@ -133,7 +134,7 @@ public class StudentsController {
 
 
     //更新学生学习进度 学生退出后自动更新
-    @GetMapping(path = "/updateProcess")
+    @PostMapping(path = "/updateProcess")
     public @ResponseBody boolean updateProcess(@RequestParam Integer studentId, Integer courseId, PresentNode presentNode, ProcessNode processNode) {
         if (studentId == null || courseId == null || presentNode == null || processNode == null) {
             return false;
@@ -160,7 +161,7 @@ public class StudentsController {
     }
 
     //学生答题
-    @GetMapping(path = "/setAnswer")
+    @PostMapping(path = "/setAnswer")
     public boolean setAnswer(@RequestParam Integer studentId, @RequestParam String courseId,@RequestParam String answer) {
         if (studentId == null || courseId == null || answer == null) {
             return false;
@@ -169,7 +170,7 @@ public class StudentsController {
     }
 
     //学生做笔记
-    @GetMapping(path = "/addNote")
+    @PostMapping(path = "/addNote")
     public @ResponseBody UserNotes addNote(@Valid UserNotes userNotes) {
         if (userNotes == null) {
             return null;
@@ -178,7 +179,7 @@ public class StudentsController {
     }
 
     //学生修改笔记
-    @GetMapping(path = "/modifyNote")
+    @PostMapping(path = "/modifyNote")
     public @ResponseBody UserNotes modifyNote(@Valid UserNotes userNotes) {
         if (userNotes == null) {
             return null;
@@ -217,17 +218,15 @@ public class StudentsController {
         return postService.addComment(postId,text, studentService.getStudent(student));
     }
 
-    //显示所有的帖子
-    @PostMapping(path = "/showAllPost")
-    public @ResponseBody List<Post> showAllPost(@RequestParam Integer courseId) {
-        if (courseId == null) {
-            return null;
-        }
-        return postService.allPost(courseId);
+    //显示所有课程的帖子
+    @GetMapping(path = "/showAllPost")
+    public @ResponseBody List<Post> showAllPost() {
+        return postService.getAllPost();
     }
+    //显示所有课程的帖子
 
     //显示一条具体的帖子
-    @PostMapping(path = "/showPost")
+    @GetMapping(path = "/showPost")
     public @ResponseBody Post showPost(@RequestParam Integer postId) {
         if (postId == null) {
             return null;

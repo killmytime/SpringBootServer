@@ -1,6 +1,7 @@
 package com.adweb.adwebserver.configuration;
 
 import com.adweb.adwebserver.securityUtils.filter.JWTStudentFilter;
+import com.adweb.adwebserver.securityUtils.filter.OpenAuthenticationFilter;
 import com.adweb.adwebserver.securityUtils.provider.CustomAuthenticationProvider;
 import com.adweb.adwebserver.securityUtils.filter.JWTAuthenticationFilter;
 import com.adweb.adwebserver.securityUtils.filter.JWTTeacherFilter;
@@ -25,18 +26,19 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 所有 / 的所有请求 都放行
                 .antMatchers("/").permitAll()
-                // 所有 /login 的POST请求 都放行
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
                 // 角色检查 所有请求需要身份认证
                 .antMatchers("/test").hasRole("TEACHER")
                 .antMatchers("/students").hasRole("STUDENT")
                 .antMatchers("/teachers").hasRole("TEACHER")
+                .antMatchers("/students/showCourse").permitAll()
+                .antMatchers("/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 添加一个过滤器 所有访问 /login 的请求交给 JWTTeacherFilter 来处理 这个类处理所有的JWT相关内容
                 .addFilterBefore(new JWTTeacherFilter("/teachers/login", authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTTeacherFilter("/teachers/register",authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTStudentFilter("/students/login",authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
+               // .addFilterBefore(new OpenAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
                 // 添加一个过滤器验证其他请求的Token是否合法
                 .addFilterBefore(new JWTAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class);

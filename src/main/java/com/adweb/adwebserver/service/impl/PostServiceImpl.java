@@ -33,10 +33,6 @@ public class PostServiceImpl implements PostService {
         return post0;
     }
 
-    @Override
-    public List<Post> allPost(int courseID) {
-        return postRepository.getPostByCourseId(courseID);
-    }
 
     @Override
     public Post showPost(int postID) {
@@ -60,6 +56,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post deletePost(int studentID, int postID) {
         return postRepository.removePostByStudentIdAndPostId(studentID, postID);
+    }
+
+    @Override
+    public List<Post> getAllPost() {
+        return postRepository.findAll();
     }
 
 }

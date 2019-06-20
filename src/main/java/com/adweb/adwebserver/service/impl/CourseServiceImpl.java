@@ -23,6 +23,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course modifyCourse(Course course) {
+        Course course1=courseRepository.getCourseByCourseId(course.getCourseId());
+        if (course1 != null){
+            course1.setCourseImage(course.getCourseImage());
+            course1.setDirectory(course.getDirectory());
+            course1.setCourseDetail(course.getCourseDetail());
+            course1.setTeacherName(course.getTeacherName());
+            course1.setCourseName(course.getCourseName());
+        }
         return courseRepository.save(course);
     }
 

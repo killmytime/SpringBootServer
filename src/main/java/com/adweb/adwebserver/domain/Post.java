@@ -15,7 +15,6 @@ import java.util.Objects;
 public class Post {
     private int postId;
     private int studentId;
-    private int courseId;
     private JSONArray text;
     private int clap;
 
@@ -39,17 +38,6 @@ public class Post {
     public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
-
-    @Basic
-    @Column(name = "courseID")
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
 
     @Basic
     @Type(type = "json")
@@ -79,13 +67,12 @@ public class Post {
         Post post = (Post) o;
         return postId == post.postId &&
                 studentId == post.studentId &&
-                courseId == post.courseId &&
                 Objects.equals(text, post.text) &&
                 clap == post.clap;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(postId, studentId, courseId, text, clap);
+        return Objects.hash(postId, studentId, text, clap);
     }
 }
