@@ -3,17 +3,17 @@ package com.adweb.adwebserver.web;
 import com.adweb.adwebserver.domain.*;
 import com.adweb.adwebserver.domain.repository.TeacherRepository;
 import com.adweb.adwebserver.service.*;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @RequestMapping(path = "/teachers")
@@ -58,15 +58,18 @@ public class TeachersController {
     @PostMapping(path = "/login")
     public @ResponseBody
     Teacher login(@RequestParam String number, @RequestParam String password) {
-        System.out.println("enter in the login");
+        //System.out.println("enter in the login");
+        if (number == null || password == null) {
+            return null;
+        }
         return teacherService.login(number, password);
     }
 
     @PostMapping(path = "/update")
     public @ResponseBody
-    Teacher update(@Valid Teacher teacher,@RequestParam MultipartFile header)throws IOException {
-        if (header!=null) {
-            teacher.setAvatar(fileService.uploadFile(header));//Todo 更新服务器的时候需要测一下
+    Teacher updateInfo(@Valid Teacher teacher,@RequestParam(required = false) MultipartFile header)throws IOException {
+        if (null!=header) {
+            teacher.setAvatar(fileService.uploadFile(header));
             System.out.println(teacher.toString());
         }
         return teacherService.update(teacher);
@@ -75,29 +78,41 @@ public class TeachersController {
     @GetMapping(path = "/info")
     public @ResponseBody
     Teacher getInfo(@RequestParam Integer teacherId) {
+        if (teacherId == null) {
+            return null;
+        }
         System.out.println("enter the info");
         Teacher teacher = new Teacher();
         teacher.setTeacherId(teacherId);
         return teacherService.getTeacher(teacher);
     }
-
+//todo set password need a check
     @PostMapping(path = "/password")
     public @ResponseBody
     boolean setPassword(@Valid Teacher teacher, @RequestParam String newPassword) {
+        if ( newPassword == null) {
+            return false;
+        }
         return teacherService.setPassword(teacher, newPassword);
     }
 
     //老师添加一门课程
     @PostMapping(path = "/createCourse")
     public @ResponseBody
-    Course createCourse(@Valid Course course) {
+    Course createCourse(@Valid Course course,@RequestParam(required = false) MultipartFile cover) throws IOException {
+        if (null!=cover){
+            course.setCourseImage(fileService.uploadFile(cover));
+        }
         return courseService.addNewCourse(course);
     }
 
     //老师修改一门课程
     @PostMapping(path = "/modifyCourse")
     public @ResponseBody
-    Course modifyCourse(@Valid Course course) {
+    Course modifyCourse(@Valid Course course,@RequestParam(required = false)MultipartFile cover) throws IOException {
+        if (null!=cover){
+            course.setCourseImage(fileService.uploadFile(cover));
+        }
         return courseService.modifyCourse(course);
     }
 
@@ -106,6 +121,9 @@ public class TeachersController {
     //解释，如果加上teacherID校验也没有必要，因为获得的course其实是公开的消息，对应的，应当在对课程进行编辑和删除处理的时候加上teacherID，这里可以不用了
     @GetMapping(path = "/getOneCourse")
     public @ResponseBody Course getOneCourse(@RequestParam Integer courseId) {
+        if (courseId == null) {
+            return null;
+        }
         return courseService.getCourseByID(courseId);
     }
 
@@ -113,19 +131,22 @@ public class TeachersController {
     @GetMapping(path = "/getAllCourse")
     public @ResponseBody
     List<Course> getAllCourse(@RequestParam Integer teacherId) {
+        if (teacherId == null) {
+            return null;
+        }
         return teacherService.getAllCourseByTeacherID(teacherId);
     }
 
 
     //老师发布课程
     @PostMapping(path = "/postCourse")
-    @ResponseBody Course postCourse(@Valid Course course) {
+    public @ResponseBody Course postCourse(@Valid Course course) {
         return courseService.postCourse(course);
     }
 
     //老师删除课程
     @PostMapping(path = "/deleteCourse")
-    @ResponseBody Course deleteCourse(@Valid Course course) {
+    public @ResponseBody Course deleteCourse(@Valid Course course) {
         return courseService.deleteCourse(course);
     }
 
@@ -158,14 +179,41 @@ public class TeachersController {
 
     //老师添加content
     @PostMapping(path = "/addContent")
-    public @ResponseBody Content addContent(@Valid Content content,@RequestParam MultipartFile[] files) {
+    public @ResponseBody Content addContent(@Valid Content content,@RequestParam(required = false) MultipartFile[] files) throws IOException {
+        modifyContentImage(content, files);
         return contentService.addContent(content);
     }
 
     //老师修改content
     @PostMapping(path = "/modifyContent")
-    public @ResponseBody Content modifyContent(@Valid Content content) {
+    public @ResponseBody Content modifyContent(@Valid Content content,@RequestParam(required = false) MultipartFile[] files) throws IOException {
+        modifyContentImage(content, files);
         return  contentService.modifyContent(content);
+    }
+
+    private void modifyContentImage(@Valid Content content, @RequestParam(required = false) MultipartFile[] files) throws IOException {
+        if (null!=files){
+            int index=0;
+            int max=files.length;
+            JSONArray dialog=content.getDialog();
+            for (int i=0;i<dialog.size();i++){
+                JSONObject dialogNode=dialog.getJSONObject(i);
+                if (2==dialogNode.getInteger("kind")) {
+                    dialogNode.put("content",fileService.uploadFile(files[index]));
+                    index+=1;
+                }
+                if (max==index) break;
+            }
+            content.setDialog(dialog);
+            JSONObject question=content.getQuestion();
+            String[] images=new String[max-index];
+            for (int i=index;i<max;i++){
+                images[max-index-1]=fileService.uploadFile(files[index]);
+            }
+            question.put("images",images);
+            content.setDialog(dialog);
+            content.setQuestion(question);
+        }
     }
 
     //老师添加directory

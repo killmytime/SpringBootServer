@@ -2,15 +2,12 @@ package com.adweb.adwebserver.domain;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @Component
 @Entity
 public class Teacher {
-    private int teacherId;
+    private Integer teacherId;
     private String number;
     private String name;
     private String email;
@@ -19,12 +16,13 @@ public class Teacher {
     private String avatar;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacherID")
-    public int getTeacherId() {
+    public Integer getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(int teacherId) {
+    public void setTeacherId(Integer teacherId) {
         this.teacherId = teacherId;
     }
 

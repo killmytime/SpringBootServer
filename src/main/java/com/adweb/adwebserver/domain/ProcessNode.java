@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class ProcessNode {
-    String courseID;
+    String contentId;
     boolean isFinished;
 }

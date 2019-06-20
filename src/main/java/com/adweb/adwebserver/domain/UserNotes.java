@@ -15,6 +15,7 @@ public class UserNotes {
     private String note;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "noteID")
     public int getNoteId() {
         return noteId;

@@ -23,6 +23,7 @@ public class UserTasks {
     private int flag;//0未完成，1待审阅，2已审阅
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "taskID")
     public int getTaskId() {
         return taskId;

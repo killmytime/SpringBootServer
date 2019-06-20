@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class PresentNode {
-    String courseID;
-    int dialogID;
+    String contentId;
+    int dialogId;
 }

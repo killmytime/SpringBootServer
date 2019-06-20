@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface TeacherRepository extends CrudRepository<Teacher,Long> {
     Teacher findTeacherByNumberAndPassword(String number,String password);
     Teacher getTeacherByTeacherId(int teacherId);
+    Teacher getTeacherByNumber(String number);
 }

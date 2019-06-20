@@ -7,10 +7,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 @Component
@@ -22,6 +19,7 @@ public class Content {
     private JSONObject question;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contentID")
     public String getContentId() {
         return contentId;

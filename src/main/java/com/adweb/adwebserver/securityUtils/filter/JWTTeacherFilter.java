@@ -4,8 +4,6 @@ import com.adweb.adwebserver.domain.JSONResult;
 import com.adweb.adwebserver.domain.Teacher;
 import com.adweb.adwebserver.securityUtils.TokenAuthentication;
 import com.adweb.adwebserver.service.TeacherService;
-import com.adweb.adwebserver.service.impl.TeacherServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,6 +43,7 @@ public class JWTTeacherFilter extends AbstractAuthenticationProcessingFilter {
             return null;
         }
         res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
+        res.setHeader("Access-Control-Expose-Headers","teacherId");
         String number=req.getParameter("number");
         String password=req.getParameter("password");
         if (number==null||password==null) return null;

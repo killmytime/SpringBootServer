@@ -23,7 +23,7 @@ public class TeacherServiceImpl implements TeacherService {
     private CourseRepository courseRepository;
     @Override
     public Teacher register(Teacher teacher) {
-        if (teacherRepository.findTeacherByNumberAndPassword(teacher.getNumber(),teacher.getPassword())==null)
+        if (teacherRepository.getTeacherByNumber(teacher.getNumber())==null)
         return teacherRepository.save(teacher);
         return null;
     }
@@ -42,7 +42,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher update(Teacher teacher) {
         Teacher teacher0=teacherRepository.getTeacherByTeacherId(teacher.getTeacherId());
-        teacher0.setNumber(teacher.getNumber());
+        //teacher0.setNumber(teacher.getNumber());
         teacher0.setEmail(teacher.getEmail());
         teacher0.setName(teacher.getName());
         teacher0.setAvatar(teacher.getAvatar());
@@ -59,7 +59,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public boolean setPassword(Teacher teacher, String newPassword) {
-        Teacher teacher0=teacherRepository.getTeacherByTeacherId(teacher.getTeacherId());
+        Teacher teacher0=teacherRepository.findTeacherByNumberAndPassword(teacher.getNumber(),teacher.getPassword());
         if (teacher.getPassword().equals(teacher0.getPassword())) {
             teacher0.setPassword(newPassword);
             teacherRepository.save(teacher0);

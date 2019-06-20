@@ -20,6 +20,7 @@ public class UserProcess {
     private JSONArray presentList;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "processID")
     public int getProcessId() {
         return processId;

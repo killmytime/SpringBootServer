@@ -5,29 +5,28 @@ import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 @Entity
 public class Course {
-    private int courseId;
+    private Integer courseId;
     private String courseName;
     private String courseDetail;
-    private int teacherId;
+    private Integer teacherId;
     private String teacherName;
-    private int flag;
+    private Integer flag;
     private JSONArray directory;
+    private String courseImage;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "courseID")
-    public int getCourseId() {
+    public Integer getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(int courseId) {
+    public void setCourseId(Integer courseId) {
         this.courseId = courseId;
     }
 
@@ -53,11 +52,11 @@ public class Course {
 
     @Basic
     @Column(name = "teacherID")
-    public int getTeacherId() {
+    public Integer getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(int teacherId) {
+    public void setTeacherId(Integer teacherId) {
         this.teacherId = teacherId;
     }
 
@@ -73,11 +72,11 @@ public class Course {
 
     @Basic
     @Column(name = "flag")
-    public int getFlag() {
+    public Integer getFlag() {
         return flag;
     }
 
-    public void setFlag(int flag) {
+    public void setFlag(Integer flag) {
         this.flag = flag;
     }
 
@@ -92,6 +91,11 @@ public class Course {
         this.directory = directory;
     }
 
+    @Basic
+    @Column(name = "course_image")
+    public String getCourseImage(){return courseImage;}
+    public void setCourseImage(String courseImage){this.courseImage=courseImage;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,11 +107,12 @@ public class Course {
                 Objects.equals(courseName, course.courseName) &&
                 Objects.equals(courseDetail, course.courseDetail) &&
                 Objects.equals(teacherName, course.teacherName) &&
-                Objects.equals(directory, course.directory);
+                Objects.equals(directory, course.directory)&&
+                Objects.equals(courseImage,course.courseImage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseId, courseName, courseDetail, teacherId, teacherName, flag, directory);
+        return Objects.hash(courseId, courseName, courseDetail, teacherId, teacherName, flag, directory,courseImage);
     }
 }

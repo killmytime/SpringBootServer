@@ -20,6 +20,7 @@ public class Post {
     private int clap;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "postID")
     public int getPostId() {
         return postId;
