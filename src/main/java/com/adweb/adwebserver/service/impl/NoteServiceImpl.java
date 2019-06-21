@@ -13,6 +13,12 @@ public class NoteServiceImpl implements NoteService {
     UserNotesRepository userNotesRepository;
     @Override
     public UserNotes addNote(UserNotes userNotes) {
+        System.out.println("=====================");
+        System.out.println(userNotes.getStudentId());
+        System.out.println(userNotes.getContentId());
+        System.out.println(userNotes.getContentName());
+        System.out.println(userNotes.getNote());
+        System.out.println("=====================");
         return userNotesRepository.save(userNotes);
     }
 

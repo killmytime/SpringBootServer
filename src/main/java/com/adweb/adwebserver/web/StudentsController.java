@@ -136,10 +136,16 @@ public class StudentsController {
 
     //更新学生学习进度 学生退出后自动更新
     @PostMapping(path = "/updateProcess")
-    public @ResponseBody boolean updateProcess(@RequestParam Integer studentId, Integer courseId, PresentNode presentNode, ProcessNode processNode) {
-        if (studentId == null || courseId == null || presentNode == null || processNode == null) {
+    public @ResponseBody boolean updateProcess(@RequestParam Integer studentId, Integer courseId, String contentId,boolean isFinished,Integer dialogId) {
+        if (studentId == null || courseId == null || contentId == null || dialogId == null) {
             return false;
         }
+        PresentNode presentNode=new PresentNode();
+        presentNode.setContentId(contentId);
+        presentNode.setDialogId(dialogId);
+        ProcessNode processNode=new ProcessNode();
+        processNode.setContentId(contentId);
+        processNode.setFinished(isFinished);
         return processService.modifyProcess(studentId, courseId, presentNode, processNode);
     }
 
@@ -203,6 +209,7 @@ public class StudentsController {
     @PostMapping(path = "/addPost")
     public @ResponseBody Post addPost(@Valid Post post,@RequestParam String jText) {
         if(post==null||jText==null) return null;
+        System.out.println(jText);
         JSONArray text=JSONArray.parseArray(jText);
         post.setText(text);
         return postService.addPost(post);

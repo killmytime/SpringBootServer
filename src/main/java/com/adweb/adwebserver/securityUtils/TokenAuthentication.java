@@ -51,7 +51,6 @@ public class TokenAuthentication {
     public static Authentication getAuthentication(HttpServletRequest request) {
         // 从Header中拿到token
         String token = request.getHeader(HEADER_STRING);
-        System.out.println("!!!!"+token);
         if (token != null) {
             // 解析 Token
             Claims claims = Jwts.parser()

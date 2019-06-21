@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Column;
 import java.util.List;
 
 @Service
@@ -23,9 +24,26 @@ public class ProcessServiceImpl implements ProcessService {
     @Override
     public boolean initProcess(int studentID, int courseID) {
         if (null!=userProcessRepository.getUserProcessesByStudentIdAndCourseId(studentID,courseID)) return true;
+        Course course=courseRepository.getCourseByCourseId(courseID);
+        JSONArray directory=course.getDirectory();
+        JSONArray processList=new JSONArray();
+        JSONArray presentList=new JSONArray();
+        for (int i=0;i<directory.size();i++){
+            String directoryId=directory.getJSONObject(i).getString("directoryId");
+            JSONObject jsonObject1=new JSONObject();
+            jsonObject1.put("contentId",directoryId);
+            jsonObject1.put("isFinished",false);
+            processList.add(jsonObject1);
+            JSONObject jsonObject2=new JSONObject();
+            jsonObject2.put("contentId",directoryId);
+            jsonObject2.put("dialogId",0);
+            presentList.add(jsonObject2);
+        }
         UserProcess userProcess=new UserProcess();
         userProcess.setStudentId(studentID);
         userProcess.setCourseId(courseID);
+        userProcess.setPresentList(presentList);
+        userProcess.setProcessList(processList);
         return null!=userProcessRepository.save(userProcess);
     }
 
@@ -35,8 +53,8 @@ public class ProcessServiceImpl implements ProcessService {
         //Todo 在修改json列表之后再把数据正确存储
         JSONArray processList=userProcess.getProcessList();
         JSONArray presentList=userProcess.getPresentList();
-        processList.add(JSONObject.toJSON(presentNode));
-        presentList.add(JSONObject.toJSON(presentNode));
+        processList.add(JSONObject.toJSON(processList));
+        presentList.add(JSONObject.toJSON(presentList));
         userProcess.setProcessList(processList);
         userProcess.setPresentList(presentList);
         userProcessRepository.save(userProcess);

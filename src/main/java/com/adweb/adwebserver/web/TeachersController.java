@@ -196,38 +196,43 @@ public class TeachersController {
     //老师添加content,这里json对象有点问题，就传字符串识别
     @PostMapping(path = "/addContent")
     public @ResponseBody
-    Content addContent(@Valid Content content, @RequestParam(required = false) MultipartFile[] files,@RequestParam String jDialog,@RequestParam String jQuestion) throws IOException {
-        JSONArray dialog=JSONArray.parseArray(jDialog);
-        JSONObject question=JSONObject.parseObject(jQuestion);
-        content.setDialog(dialog);
-        content.setQuestion(question);
-        modifyContentImage(content,files);
-        System.out.println(content.toString());
+    Content addContent(@Valid Content content, @RequestParam(required = false) MultipartFile[] files, @RequestParam(required = false) String jDialog, @RequestParam(required = false) String jQuestion) throws IOException {
+        contentCheck(content, files, jDialog, jQuestion);
         return contentService.addContent(content);
     }
 
     //老师修改content
     @PostMapping(path = "/modifyContent")
     public @ResponseBody
-    Content modifyContent(@Valid Content content, @RequestParam(required = false) MultipartFile[] files,@RequestParam String jDialog,@RequestParam String jQuestion) throws IOException {
-        JSONArray dialog=JSONArray.parseArray(jDialog);
-        JSONObject question=JSONObject.parseObject(jQuestion);
-        content.setDialog(dialog);
-        content.setQuestion(question);
-        modifyContentImage(content,files);
-        System.out.println(content.toString());
+    Content modifyContent(@Valid Content content, @RequestParam(required = false) MultipartFile[] files, @RequestParam(required = false) String jDialog, @RequestParam(required = false) String jQuestion) throws IOException {
+        contentCheck(content, files, jDialog, jQuestion);
         return contentService.modifyContent(content);
     }
+
+    private void contentCheck(@Valid Content content, @RequestParam(required = false) MultipartFile[] files, @RequestParam(required = false) String jDialog, @RequestParam(required = false) String jQuestion) throws IOException {
+        if (jDialog != null) {
+            JSONArray dialog = JSONArray.parseArray(jDialog);
+            content.setDialog(dialog);
+        }
+        if (jQuestion != null) {
+            JSONObject question = JSONObject.parseObject(jQuestion);
+            content.setQuestion(question);
+        }
+        modifyContentImage(content, files);
+        System.out.println(content.toString());
+    }
+
     //简单来就一个字符一个字符算了
     private void modifyContentImage(Content content, MultipartFile[] files) throws IOException {
         if (null != files && null != content) {
             int index = 0;
             int max = files.length;
+            if (max==0)return;
             if (content.getDialog() != null) {
                 JSONArray dialog = content.getDialog();
                 for (int i = 0; i < dialog.size(); i++) {
                     JSONObject dialogNode = JSONObject.parseObject(dialog.getString(i));
-                    if (2 == dialogNode.getInteger("kind")) {
+                    if (1 == dialogNode.getInteger("kind")) {//1为图片的id属性
                         dialogNode.put("content", fileService.uploadFile(files[index]));
                         index += 1;
                     }
@@ -251,16 +256,18 @@ public class TeachersController {
     @PostMapping(path = "/addDirectory")
     public @ResponseBody
     Course addDirectory(@RequestParam Integer courseId, @RequestParam String jDirectory) {
-        JSONArray directory=JSONArray.parseArray(jDirectory);
+        System.out.println(jDirectory);
+        JSONObject directory=JSONObject.parseObject(jDirectory);
         return directoryService.addNewDirectory(courseId, directory);
     }
 
-    //老师修改directory
+    //老师修改directory,废弃
     @PostMapping(path = "/modifyDirectory")
     public @ResponseBody
-    Course modifyDirectory(@RequestParam Integer courseId,@RequestParam String jDirectory) {
-        JSONArray directory=JSONArray.parseArray(jDirectory);
-        return directoryService.modifyDirectory(courseId, directory);
+    Course modifyDirectory(@RequestParam Integer courseId, @RequestParam String jDirectory) {
+//        JSONArray directory = JSONArray.parseArray(jDirectory);
+//        return directoryService.modifyDirectory(courseId, directory);
+        return null;
     }
 
 
