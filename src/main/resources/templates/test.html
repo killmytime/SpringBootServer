@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        function crosRequest(){
+            var array = text.split("#");
+            var jDialog = '';
+            jDialog += "[";
+            for (var i = 0; i < array.length -1; i++) {
+                jDialog+= "{dialogId:"+i+",kind:0,content:\""+array[i]+"\"},";
+            }
+            jDialog+= "{dialogId:"+array.length-1+",kind:0,content:\""+array[array.length-1]+"\"}";
+            jDialog+="]";
+            console.log(jDialog);
+
+            // $.post("http://localhost:8080/teachers/login", { number: "18817543545", password:"hello123" } ,function(data, textStatus, jqXHR) {
+            //     alert(jqXHR.getResponseHeader("Server"));
+            //     alert(jqXHR.getResponseHeader("Content-Type"));
+            //     alert(jqXHR.getResponseHeader("X-Powered-By"));
+            //     alert(jqXHR.getResponseHeader("Content-Encoding"));
+            //     alert(jqXHR.getAllResponseHeaders());
+            //     alert(jqXHR.getResponseHeader("Set-Cookie"));       //返回null，不能获取Set-Cookie的值
+            //     alert(data + textStatus);
+            // });
+
+            // $.ajax({
+            //     url: "http://47.101.189.80:28080/teachers/info?",
+            //     method: 'get',
+            //
+            //     headers:{"authorization":"Bearer eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6IlJPTEVfVEVBQ0hFUiIsInN1YiI6IjE4ODE3NTQzNTQ1IiwiZXhwIjoxNTYxMjcxNjY4fQ.K_xitT6ogh7oVNsYSCJbVaICm6_GYcOct1hiNHVKhJ9qitYb_ngIiasKPN_mIiuXa25cTKtxbJpbA_y2jW054w"},
+            //     data: {teacherId:"1"},
+            //     success: function(data) {
+            //         alert(data.hasOwnProperty("name"));
+            //     }
+            // });
+            }
+    </script>
+</head>
+<body>
+<button onclick="crosRequest()">请求跨域资源</button>
+<!--<form action="${pageContext.request.contextPath}/test/upload.do" method="post" enctype="multipart/form-data">-->
+<!--    <input type="file" name="img"><br />-->
+<!--    <input type="submit" name="提交">-->
+<!--</form>-->
+</body>
+</html>
