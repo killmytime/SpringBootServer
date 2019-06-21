@@ -1,12 +1,10 @@
 package com.adweb.adwebserver.configuration;
 
 import com.adweb.adwebserver.securityUtils.filter.JWTStudentFilter;
-import com.adweb.adwebserver.securityUtils.filter.OpenAuthenticationFilter;
 import com.adweb.adwebserver.securityUtils.provider.CustomAuthenticationProvider;
 import com.adweb.adwebserver.securityUtils.filter.JWTAuthenticationFilter;
 import com.adweb.adwebserver.securityUtils.filter.JWTTeacherFilter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,13 +30,14 @@ class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/teachers").hasRole("TEACHER")
                 .antMatchers("/students/showCourse").permitAll()
                 .antMatchers("/img/**").permitAll()
+                .antMatchers("/test/**").permitAll()
+               // .antMatchers("/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // 添加一个过滤器 所有访问 /login 的请求交给 JWTTeacherFilter 来处理 这个类处理所有的JWT相关内容
                 .addFilterBefore(new JWTTeacherFilter("/teachers/login", authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTTeacherFilter("/teachers/register",authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTStudentFilter("/students/login",authenticationManager(),getApplicationContext()),UsernamePasswordAuthenticationFilter.class)
-               // .addFilterBefore(new OpenAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
                 // 添加一个过滤器验证其他请求的Token是否合法
                 .addFilterBefore(new JWTAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class);

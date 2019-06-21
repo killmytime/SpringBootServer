@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <docker.image.prefix>killmytime</docker.image.prefix>
+        <springfox-swagger2.version>2.6.0</springfox-swagger2.version>
     </properties>
     <dependencies>
         <dependency>
@@ -71,8 +72,18 @@
         <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-5</artifactId>
-            <version>1.2.0</version>
+            <version>2.4.2</version>
         </dependency>
+        <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>${springfox-swagger2.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>${springfox-swagger2.version}</version>
+    </dependency>
     </dependencies>
 
     <build>

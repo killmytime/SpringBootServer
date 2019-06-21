@@ -75,4 +75,14 @@ public class Post {
     public int hashCode() {
         return Objects.hash(postId, studentId, text, clap);
     }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", studentId=" + studentId +
+                ", text=" + text +
+                ", clap=" + clap +
+                '}';
+    }
 }

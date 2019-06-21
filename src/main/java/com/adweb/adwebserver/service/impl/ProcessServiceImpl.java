@@ -22,6 +22,7 @@ public class ProcessServiceImpl implements ProcessService {
     CourseRepository courseRepository;
     @Override
     public boolean initProcess(int studentID, int courseID) {
+        if (null!=userProcessRepository.getUserProcessesByStudentIdAndCourseId(studentID,courseID)) return true;
         UserProcess userProcess=new UserProcess();
         userProcess.setStudentId(studentID);
         userProcess.setCourseId(courseID);

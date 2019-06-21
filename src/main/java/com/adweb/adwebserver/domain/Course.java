@@ -115,4 +115,18 @@ public class Course {
     public int hashCode() {
         return Objects.hash(courseId, courseName, courseDetail, teacherId, teacherName, flag, directory,courseImage);
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "courseId=" + courseId +
+                ", courseName='" + courseName + '\'' +
+                ", courseDetail='" + courseDetail + '\'' +
+                ", teacherId=" + teacherId +
+                ", teacherName='" + teacherName + '\'' +
+                ", flag=" + flag +
+                ", directory=" + directory +
+                ", courseImage='" + courseImage + '\'' +
+                '}';
+    }
 }

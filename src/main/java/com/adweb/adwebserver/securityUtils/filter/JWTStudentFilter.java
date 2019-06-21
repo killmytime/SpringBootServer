@@ -32,13 +32,6 @@ public class JWTStudentFilter extends AbstractAuthenticationProcessingFilter {
             throws AuthenticationException {
         // 返回一个验证令牌
         res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
-        Enumeration params=req.getParameterNames();
-        System.out.println("===================================================================");
-        while(params.hasMoreElements()){
-            String param = (String) params.nextElement();
-            System.out.println(param + ":" + req.getParameter(param));
-        }
-        System.out.println("===================================================================");
         String name = req.getParameter("name");
         String wechatID = req.getParameter("wechatID");
         String avatar=req.getParameter("avatar");

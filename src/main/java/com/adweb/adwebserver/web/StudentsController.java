@@ -3,6 +3,7 @@ package com.adweb.adwebserver.web;
 import com.adweb.adwebserver.domain.*;
 import com.adweb.adwebserver.domain.repository.StudentRepository;
 import com.adweb.adwebserver.service.*;
+import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -200,10 +201,10 @@ public class StudentsController {
 
     //学生发布一条帖子
     @PostMapping(path = "/addPost")
-    public @ResponseBody Post addPost(@Valid Post post) {
-        if (post == null) {
-            return null;
-        }
+    public @ResponseBody Post addPost(@Valid Post post,@RequestParam String jText) {
+        if(post==null||jText==null) return null;
+        JSONArray text=JSONArray.parseArray(jText);
+        post.setText(text);
         return postService.addPost(post);
     }
 

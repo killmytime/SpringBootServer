@@ -18,7 +18,9 @@ public class CourseServiceImpl implements CourseService {
     UserProcessRepository userProcessRepository;
     @Override
     public Course addNewCourse(Course course) {
+        if (course.getCourseId()==null)
         return courseRepository.save(course);
+        return null;
     }
 
     @Override

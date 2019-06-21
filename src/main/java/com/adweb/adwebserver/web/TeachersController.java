@@ -3,13 +3,17 @@ package com.adweb.adwebserver.web;
 import com.adweb.adwebserver.domain.*;
 import com.adweb.adwebserver.domain.repository.TeacherRepository;
 import com.adweb.adwebserver.service.*;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.spring.web.json.Json;
 
+import javax.swing.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -33,6 +37,7 @@ public class TeachersController {
     DirectoryService directoryService;
     @Autowired
     FileService fileService;
+
     @GetMapping(path = "/all")
     public @ResponseBody
     Iterable<Teacher> getTeachers() {
@@ -54,6 +59,7 @@ public class TeachersController {
         return teacherService.register(teacher);
     }
 
+
     @PostMapping(path = "/login")
     public @ResponseBody
     Teacher login(@RequestParam String number, @RequestParam String password) {
@@ -66,8 +72,8 @@ public class TeachersController {
 
     @PostMapping(path = "/update")
     public @ResponseBody
-    Teacher updateInfo(@Valid Teacher teacher,@RequestParam(required = false) MultipartFile header)throws IOException {
-        if (null!=header) {
+    Teacher updateInfo(@Valid Teacher teacher, @RequestParam(required = false) MultipartFile header) throws IOException {
+        if (null != header) {
             teacher.setAvatar(fileService.uploadFile(header));
             System.out.println(teacher.toString());
         }
@@ -85,11 +91,12 @@ public class TeachersController {
         teacher.setTeacherId(teacherId);
         return teacherService.getTeacher(teacher);
     }
-//todo set password need a check
+
+    //todo set password need a check
     @PostMapping(path = "/password")
     public @ResponseBody
     boolean setPassword(@Valid Teacher teacher, @RequestParam String newPassword) {
-        if ( newPassword == null) {
+        if (newPassword == null) {
             return false;
         }
         return teacherService.setPassword(teacher, newPassword);
@@ -98,20 +105,24 @@ public class TeachersController {
     //老师添加一门课程
     @PostMapping(path = "/createCourse")
     public @ResponseBody
-    Course createCourse(@Valid Course course,@RequestParam(required = false) MultipartFile cover) throws IOException {
-        if (null!=cover){
+    Course createCourse(@Valid Course course, @RequestParam(required = false) MultipartFile cover) throws IOException {
+        if (null != cover) {
+            System.out.println("enter the set cover");
             course.setCourseImage(fileService.uploadFile(cover));
         }
+        System.out.println(course.toString());
         return courseService.addNewCourse(course);
     }
 
     //老师修改一门课程
     @PostMapping(path = "/modifyCourse")
     public @ResponseBody
-    Course modifyCourse(@Valid Course course,@RequestParam(required = false)MultipartFile cover) throws IOException {
-        if (null!=cover){
+    Course modifyCourse(@Valid Course course, @RequestParam(required = false) MultipartFile cover) throws IOException {
+        if (null != cover) {
+            System.out.println("enter the set cover");
             course.setCourseImage(fileService.uploadFile(cover));
         }
+        System.out.println(course.toString());
         return courseService.modifyCourse(course);
     }
 
@@ -119,7 +130,8 @@ public class TeachersController {
     //要根据teacherID来查吗 不然可能会查到不是自己的课程
     //解释，如果加上teacherID校验也没有必要，因为获得的course其实是公开的消息，对应的，应当在对课程进行编辑和删除处理的时候加上teacherID，这里可以不用了
     @GetMapping(path = "/getOneCourse")
-    public @ResponseBody Course getOneCourse(@RequestParam Integer courseId) {
+    public @ResponseBody
+    Course getOneCourse(@RequestParam Integer courseId) {
         if (courseId == null) {
             return null;
         }
@@ -139,13 +151,15 @@ public class TeachersController {
 
     //老师发布课程
     @PostMapping(path = "/postCourse")
-    public @ResponseBody Course postCourse(@Valid Course course) {
+    public @ResponseBody
+    Course postCourse(@Valid Course course) {
         return courseService.postCourse(course);
     }
 
     //老师删除课程
     @PostMapping(path = "/deleteCourse")
-    public @ResponseBody Course deleteCourse(@Valid Course course) {
+    public @ResponseBody
+    Course deleteCourse(@Valid Course course) {
         return courseService.deleteCourse(course);
     }
 
@@ -159,72 +173,94 @@ public class TeachersController {
     //老师查看一门课程所有学生的学习进度
     // 是否需要根据teacherID来查 fixed
     @GetMapping(path = "/allProcess")
-    public @ResponseBody List<UserProcess> allProcess(@RequestParam Integer courseId,@RequestParam Integer teacherId) {
-        return processService.getUserProcessesByCourseID(courseId,teacherId);
+    public @ResponseBody
+    List<UserProcess> allProcess(@RequestParam Integer courseId, @RequestParam Integer teacherId) {
+        return processService.getUserProcessesByCourseID(courseId, teacherId);
     }
 
     //老师查看一门课所有学生的任务
     // 是否需要根据teacherID来查 fixed
     @GetMapping(path = "/allTask")
-    public @ResponseBody List<UserTasks> allTask(@RequestParam Integer courseId,@RequestParam Integer teacherId) {
-        return taskService.getStudentsTasksByCourseID(courseId,teacherId);
+    public @ResponseBody
+    List<UserTasks> allTask(@RequestParam Integer courseId, @RequestParam Integer teacherId) {
+        return taskService.getStudentsTasksByCourseID(courseId, teacherId);
     }
 
     //老师获取content
     @GetMapping(path = "/getContent")
-    public @ResponseBody Content getContent(@RequestParam String contentId) {
+    public @ResponseBody
+    Content getContent(@RequestParam String contentId) {
         return contentService.getContentByContentID(contentId);
     }
 
-    //老师添加content
+    //老师添加content,这里json对象有点问题，就传字符串识别
     @PostMapping(path = "/addContent")
-    public @ResponseBody Content addContent(@Valid Content content,@RequestParam(required = false) MultipartFile[] files) throws IOException {
-        modifyContentImage(content, files);
+    public @ResponseBody
+    Content addContent(@Valid Content content, @RequestParam(required = false) MultipartFile[] files,@RequestParam String jDialog,@RequestParam String jQuestion) throws IOException {
+        JSONArray dialog=JSONArray.parseArray(jDialog);
+        JSONObject question=JSONObject.parseObject(jQuestion);
+        content.setDialog(dialog);
+        content.setQuestion(question);
+        modifyContentImage(content,files);
+        System.out.println(content.toString());
         return contentService.addContent(content);
     }
 
     //老师修改content
     @PostMapping(path = "/modifyContent")
-    public @ResponseBody Content modifyContent(@Valid Content content,@RequestParam(required = false) MultipartFile[] files) throws IOException {
-        modifyContentImage(content, files);
-        return  contentService.modifyContent(content);
+    public @ResponseBody
+    Content modifyContent(@Valid Content content, @RequestParam(required = false) MultipartFile[] files,@RequestParam String jDialog,@RequestParam String jQuestion) throws IOException {
+        JSONArray dialog=JSONArray.parseArray(jDialog);
+        JSONObject question=JSONObject.parseObject(jQuestion);
+        content.setDialog(dialog);
+        content.setQuestion(question);
+        modifyContentImage(content,files);
+        System.out.println(content.toString());
+        return contentService.modifyContent(content);
     }
-
-    private void modifyContentImage(@Valid Content content, @RequestParam(required = false) MultipartFile[] files) throws IOException {
-        if (null!=files){
-            int index=0;
-            int max=files.length;
-            JSONArray dialog=content.getDialog();
-            for (int i=0;i<dialog.size();i++){
-                JSONObject dialogNode=dialog.getJSONObject(i);
-                if (2==dialogNode.getInteger("kind")) {
-                    dialogNode.put("content",fileService.uploadFile(files[index]));
-                    index+=1;
+    //简单来就一个字符一个字符算了
+    private void modifyContentImage(Content content, MultipartFile[] files) throws IOException {
+        if (null != files && null != content) {
+            int index = 0;
+            int max = files.length;
+            if (content.getDialog() != null) {
+                JSONArray dialog = content.getDialog();
+                for (int i = 0; i < dialog.size(); i++) {
+                    JSONObject dialogNode = JSONObject.parseObject(dialog.getString(i));
+                    if (2 == dialogNode.getInteger("kind")) {
+                        dialogNode.put("content", fileService.uploadFile(files[index]));
+                        index += 1;
+                    }
+                    if (max == index) break;
                 }
-                if (max==index) break;
+                content.setDialog(dialog);
             }
-            content.setDialog(dialog);
-            JSONObject question=content.getQuestion();
-            String[] images=new String[max-index];
-            for (int i=index;i<max;i++){
-                images[max-index-1]=fileService.uploadFile(files[index]);
+            if (content.getQuestion() != null) {
+                JSONObject question = content.getQuestion();
+                String[] images = new String[max - index];
+                for (int i = index; i < max; i++) {
+                    images[max - index - 1] = fileService.uploadFile(files[index]);
+                }
+                question.put("images", images);
+                content.setQuestion(question);
             }
-            question.put("images",images);
-            content.setDialog(dialog);
-            content.setQuestion(question);
         }
     }
 
     //老师添加directory
     @PostMapping(path = "/addDirectory")
-    public @ResponseBody Course addDirectory(@RequestParam Integer courseId, @RequestParam JSONArray list) {
-        return directoryService.addNewDirectory(courseId, list);
+    public @ResponseBody
+    Course addDirectory(@RequestParam Integer courseId, @RequestParam String jDirectory) {
+        JSONArray directory=JSONArray.parseArray(jDirectory);
+        return directoryService.addNewDirectory(courseId, directory);
     }
 
     //老师修改directory
     @PostMapping(path = "/modifyDirectory")
-    public @ResponseBody Course modifyDirectory(@RequestParam Integer courseId, @RequestParam JSONArray list) {
-        return directoryService.modifyDirectory(courseId, list);
+    public @ResponseBody
+    Course modifyDirectory(@RequestParam Integer courseId,@RequestParam String jDirectory) {
+        JSONArray directory=JSONArray.parseArray(jDirectory);
+        return directoryService.modifyDirectory(courseId, directory);
     }
 
 

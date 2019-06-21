@@ -3,6 +3,7 @@ package com.adweb.adwebserver.domain;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import io.swagger.models.auth.In;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Component
 @Entity
 public class Content {
+    private Integer generateId;
     private String contentId;
     private String contentName;
     private JSONArray dialog;
@@ -20,6 +22,12 @@ public class Content {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "generateID")
+    public Integer getGenerateId(){return generateId;}
+
+    public void setGenerateId(Integer generateId){this.generateId=generateId;}
+
+    @Basic
     @Column(name = "contentID")
     public String getContentId() {
         return contentId;
@@ -75,5 +83,15 @@ public class Content {
     @Override
     public int hashCode() {
         return Objects.hash(contentId, contentName, dialog, question);
+    }
+
+    @Override
+    public String toString() {
+        return "Content{" +
+                "contentId='" + contentId + '\'' +
+                ", contentName='" + contentName + '\'' +
+                ", dialog=" + dialog +
+                ", question=" + question +
+                '}';
     }
 }
